@@ -9,19 +9,18 @@ namespace Dotjosh.iRobot.Framework.Core
 		public event Action SensorsUpdated;
 
 		private readonly IOCommunicator _ioCommunicator;
-		private readonly SensorUpdater _sensorUpdater;
+		private readonly IEnumerable<ISensor> _sensors;
 
-		public RobotController(IOCommunicator ioCommunicator)
+		public RobotController(IOCommunicator ioCommunicator, IEnumerable<ISensor> sensors)
 		{
 			_ioCommunicator = ioCommunicator;
-			_sensorUpdater = new SensorUpdater();
+			_sensors = sensors;
 			_ioCommunicator.DataRecieved += IO_DataRecieved;
 		}
 
-		public void StartStreamingSensorUpdates(IEnumerable<ISensor> sensors)
+		public void StartStreamingSensorUpdates()
 		{
-			_sensorUpdater.Sensors = sensors;
-			var startStreamCommand = new StartStreamCommand(sensors);
+			var startStreamCommand = new StartStreamCommand(_sensors);
 			Execute(startStreamCommand);
 		}
 
@@ -33,7 +32,7 @@ namespace Dotjosh.iRobot.Framework.Core
 		private void IO_DataRecieved(byte[] newBytes)
 		{
 			var sensorResponse = new SensorResponse(newBytes);
-			_sensorUpdater.Handle(sensorResponse);
+			sensorResponse.UpdateSensors(_sensors);
 			OnSensorsUpdated();
 		}
 

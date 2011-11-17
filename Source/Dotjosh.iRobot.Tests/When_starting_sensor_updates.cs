@@ -4,7 +4,6 @@ using System.Linq.Expressions;
 using Dotjosh.iRobot.Framework;
 using Dotjosh.iRobot.Framework.Core;
 using Dotjosh.iRobot.Framework.Sensors;
-using Dotjosh.iRobot.Tests.Sensors;
 using Moq;
 using NUnit.Framework;
 
@@ -34,8 +33,8 @@ namespace Dotjosh.iRobot.Tests
 			              	{
 			              		new BumpsAndWheelDrops()
 			              	};
-			_robotController = new RobotController(_mockIoCommunicator.Object);
-			_robotController.StartStreamingSensorUpdates(sensors);
+			_robotController = new RobotController(_mockIoCommunicator.Object, sensors);
+			_robotController.StartStreamingSensorUpdates();
 		}
 
 		[Test]

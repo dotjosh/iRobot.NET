@@ -1,7 +1,7 @@
 using System;
 using Dotjosh.iRobot.Framework.Core;
 
-namespace Dotjosh.iRobot.Tests.Sensors
+namespace Dotjosh.iRobot.Framework.Sensors
 {
 	public abstract class StandardSensor : ISensor
 	{

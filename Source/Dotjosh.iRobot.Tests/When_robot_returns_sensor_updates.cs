@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Dotjosh.iRobot.Framework;
 using Dotjosh.iRobot.Framework.Core;
 using Dotjosh.iRobot.Framework.Sensors;
-using Dotjosh.iRobot.Tests.Sensors;
 using Moq;
 using NUnit.Framework;
 using Should;
@@ -29,8 +28,8 @@ namespace Dotjosh.iRobot.Tests
 			              	{
 			              		_bumpsAndWheelDropsSensor
 			              	};
-			_robotController = new RobotController(_mockIoCommunicator.Object);
-			_robotController.StartStreamingSensorUpdates(sensors);
+			_robotController = new RobotController(_mockIoCommunicator.Object, sensors);
+			_robotController.StartStreamingSensorUpdates();
 
 			byte headerByte = 19;
 			byte numOfBytesInBody = 2;
