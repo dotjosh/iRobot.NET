@@ -20,7 +20,7 @@ namespace Dotjosh.iRobot.Tests
 		{
 			_mockIoCommunicator = new Mock<IOCommunicator>();
 
-			var startStreamBytes = new byte[] { 148, 1, SensorBase.Bumps_And_WheelDrops };
+			var startStreamBytes = new byte[] { 148, 1, Sensor.Bumps_And_WheelDrops };
 			_writeToIoExpectation = ioCommunicator => ioCommunicator.Write(
 														It.Is<byte[]>(bytes => BytesAreEqual(startStreamBytes, bytes)), 
 														It.Is<int>(offset => offset == 0),

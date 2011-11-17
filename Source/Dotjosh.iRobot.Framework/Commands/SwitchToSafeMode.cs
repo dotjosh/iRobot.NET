@@ -1,8 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public class SafeMode : CommandBase
+	public class SwitchToSafeMode : Command
 	{
 		protected override byte OpCode
 		{

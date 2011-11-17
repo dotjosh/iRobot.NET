@@ -2,7 +2,7 @@
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public abstract class CommandBase : ICommand
+	public abstract class Command : ICommand
 	{
 		protected abstract byte OpCode { get; }
 		protected abstract IList<byte> SubsequentBytes { get; }

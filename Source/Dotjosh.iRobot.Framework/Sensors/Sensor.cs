@@ -2,7 +2,7 @@ using System;
 
 namespace Dotjosh.iRobot.Framework.Sensors
 {
-	public abstract class OneByteSensor : SensorBase
+	public abstract class OneByteSensor : Sensor
 	{
 		public override int Value
 		{
@@ -15,7 +15,7 @@ namespace Dotjosh.iRobot.Framework.Sensors
 		}
 	}
 
-	public abstract class SignedTwoByteSensor : SensorBase
+	public abstract class SignedTwoByteSensor : Sensor
 	{
 		public override int Value
 		{
@@ -28,7 +28,7 @@ namespace Dotjosh.iRobot.Framework.Sensors
 		}
 	}
 
-	public abstract class UnsignedTwoByteSensor : SensorBase
+	public abstract class UnsignedTwoByteSensor : Sensor
 	{
 		public override int Value
 		{
@@ -41,7 +41,7 @@ namespace Dotjosh.iRobot.Framework.Sensors
 		}
 	}
 
-	public abstract class SensorBase : ISensor
+	public abstract class Sensor : ISensor
 	{
 		public abstract byte PackedId { get; }
 		public abstract int DataByteCount { get; }

@@ -24,22 +24,6 @@ namespace Dotjosh.iRobot.Framework
 			Execute(startStreamCommand);
 		}
 
-		public void Start()
-		{
-			Execute(new Commands.StartInPassiveMode());
-			Execute(new Commands.Baud());
-		}
-
-		public void SwitchToSafeMode()
-		{
-			Execute(new Commands.SafeMode());
-		}
-
-		public void SwitchToFullMode()
-		{
-			Execute(new Commands.FullMode());
-		}
-
 		public void Execute(ICommand command)
 		{
 			command.Execute(_ioCommunicator);

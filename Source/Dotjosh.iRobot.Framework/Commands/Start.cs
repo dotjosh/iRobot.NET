@@ -2,7 +2,19 @@
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public class StartInPassiveMode : CommandBase
+	public class Start : CompositeCommand
+	{
+		public override IEnumerable<ICommand> Commands
+		{
+			get
+			{
+				yield return new InitialStart();
+				yield return new Baud();
+			}
+		}
+	}
+
+	public class InitialStart : Command
 	{
 		protected override byte OpCode
 		{

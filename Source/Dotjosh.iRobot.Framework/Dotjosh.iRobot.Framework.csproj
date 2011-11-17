@@ -42,13 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Baud.cs" />
+    <Compile Include="Commands\CompositeCommand.cs" />
     <Compile Include="Commands\Drive.cs" />
     <Compile Include="Commands\DriveStraight.cs" />
-    <Compile Include="Commands\CommandBase.cs" />
-    <Compile Include="Commands\FullMode.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\SwitchToFullMode.cs" />
     <Compile Include="Commands\RequestSensorStream.cs" />
-    <Compile Include="Commands\SafeMode.cs" />
-    <Compile Include="Commands\StartInPassiveMode.cs" />
+    <Compile Include="Commands\Start.cs" />
+    <Compile Include="Commands\SwitchToSafeMode.cs" />
     <Compile Include="Commands\TurnInPlaceClockwise.cs" />
     <Compile Include="Commands\TurnInPlaceCounterClockwise.cs" />
     <Compile Include="ExtensionMethods\NumberExtensions.cs" />
@@ -65,7 +66,7 @@
     <Compile Include="Sensors\ChargingState.cs" />
     <Compile Include="Sensors\CliffLeft.cs" />
     <Compile Include="Sensors\CliffRight.cs" />
-    <Compile Include="Sensors\SensorBase.cs" />
+    <Compile Include="Sensors\Sensor.cs" />
     <Compile Include="Sensors\Wall.cs" />
   </ItemGroup>
   <ItemGroup />

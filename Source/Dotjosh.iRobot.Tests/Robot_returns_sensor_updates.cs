@@ -37,7 +37,7 @@ namespace Dotjosh.iRobot.Tests
 			                        	{
 			                        		headerByte, 
 											numOfBytesInBody,
-											SensorBase.Bumps_And_WheelDrops,
+											Sensor.Bumps_And_WheelDrops,
 											dataByte
 			                        	};
 			_mockIoCommunicator.Raise(ioCommunicator => ioCommunicator.DataRecieved += null, sensorUpdateBytes);

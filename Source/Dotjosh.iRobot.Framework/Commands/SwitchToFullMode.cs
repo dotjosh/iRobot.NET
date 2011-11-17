@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public class FullMode : CommandBase
+	public class SwitchToFullMode : Command
 	{
 		protected override byte OpCode
 		{
