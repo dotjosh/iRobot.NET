@@ -41,22 +41,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\DriveCommand.cs" />
-    <Compile Include="Commands\StandardCommand.cs" />
-    <Compile Include="Commands\StartStreamCommand.cs" />
-    <Compile Include="PacketIds.cs" />
-    <Compile Include="Core\IOCommunicator.cs" />
-    <Compile Include="Core\ICommand.cs" />
-    <Compile Include="Core\ISensor.cs" />
-    <Compile Include="Core\RobotController.cs" />
-    <Compile Include="Core\SensorStatusData.cs" />
-    <Compile Include="Core\SerialPortIOCommunicator.cs" />
+    <Compile Include="Commands\Drive.cs" />
+    <Compile Include="Commands\DriveStraight.cs" />
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\RequestSensorStream.cs" />
+    <Compile Include="Commands\TurnInPlaceClockwise.cs" />
+    <Compile Include="Commands\TurnInPlaceCounterClockwise.cs" />
+    <Compile Include="ExtensionMethods\NumberExtensions.cs" />
+    <Compile Include="IOCommunicator.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Sensors\ISensor.cs" />
+    <Compile Include="RobotController.cs" />
+    <Compile Include="Sensors\SensorStatusData.cs" />
+    <Compile Include="SerialPortIOCommunicator.cs" />
     <Compile Include="ExtensionMethods\SerialPortExtensions.cs" />
-    <Compile Include="Core\SerialPortFactory.cs" />
+    <Compile Include="SerialPortFactory.cs" />
     <Compile Include="Exceptions\UnknownSensorException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sensors\BumpsAndWheelDrops.cs" />
-    <Compile Include="Sensors\StandardSensor.cs" />
+    <Compile Include="Sensors\ChargingState.cs" />
+    <Compile Include="Sensors\CliffLeft.cs" />
+    <Compile Include="Sensors\CliffRight.cs" />
+    <Compile Include="Sensors\SensorBase.cs" />
+    <Compile Include="Sensors\Wall.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

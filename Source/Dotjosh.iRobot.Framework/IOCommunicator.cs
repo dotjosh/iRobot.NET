@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dotjosh.iRobot.Framework.Core
+namespace Dotjosh.iRobot.Framework
 {
 	public delegate void DataRecievedHandler(byte[] newBytes);
 

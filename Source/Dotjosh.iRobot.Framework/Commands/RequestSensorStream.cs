@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Dotjosh.iRobot.Framework.Core;
+using Dotjosh.iRobot.Framework.Sensors;
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public class StartStreamCommand : StandardCommand
+	public class RequestSensorStream : CommandBase
 	{
 		private readonly IEnumerable<ISensor> _sensors;
 
-		public StartStreamCommand(IEnumerable<ISensor> sensors)
+		public RequestSensorStream(IEnumerable<ISensor> sensors)
 		{
 			_sensors = sensors;
 		}

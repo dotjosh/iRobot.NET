@@ -1,4 +1,4 @@
-﻿namespace Dotjosh.iRobot.Framework.Core
+﻿namespace Dotjosh.iRobot.Framework.Commands
 {
 	public interface ICommand
 	{

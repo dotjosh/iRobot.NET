@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using Dotjosh.iRobot.Framework.Core;
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public abstract class StandardCommand : ICommand
+	public abstract class CommandBase : ICommand
 	{
 		protected abstract byte OpCode { get; }
 		protected abstract IList<byte> SubsequentBytes { get; }

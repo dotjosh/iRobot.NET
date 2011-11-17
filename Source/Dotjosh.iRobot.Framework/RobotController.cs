@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Dotjosh.iRobot.Framework.Commands;
+using Dotjosh.iRobot.Framework.Sensors;
 
-namespace Dotjosh.iRobot.Framework.Core
+namespace Dotjosh.iRobot.Framework
 {
 	public class RobotController : IDisposable
 	{
@@ -30,9 +31,9 @@ namespace Dotjosh.iRobot.Framework.Core
 				SensorsUpdated();
 		}
 
-		public void StartStreamingSensorUpdates()
+		public void RequestSensorUpdates()
 		{
-			var startStreamCommand = new StartStreamCommand(_sensors);
+			var startStreamCommand = new RequestSensorStream(_sensors);
 			Execute(startStreamCommand);
 		}
 

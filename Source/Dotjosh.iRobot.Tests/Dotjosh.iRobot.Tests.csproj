@@ -55,8 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="When_robot_returns_sensor_updates.cs" />
-    <Compile Include="When_starting_sensor_updates.cs" />
+    <Compile Include="Robot_returns_sensor_updates.cs" />
+    <Compile Include="Starting_sensor_updates.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

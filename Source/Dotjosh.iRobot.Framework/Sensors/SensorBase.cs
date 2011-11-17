@@ -1,7 +1,60 @@
-namespace Dotjosh.iRobot.Framework
+using System;
+
+namespace Dotjosh.iRobot.Framework.Sensors
 {
-	public static class PacketIds
+	public abstract class OneByteSensor : SensorBase
 	{
+		public override int Value
+		{
+			get { return Bytes[0]; }
+		}
+
+		public override int DataByteCount
+		{
+			get { return 1; }
+		}
+	}
+
+	public abstract class SignedTwoByteSensor : SensorBase
+	{
+		public override int Value
+		{
+			get { return BitConverter.ToInt16(Bytes, 0); }
+		}
+
+		public override int DataByteCount
+		{
+			get { return 2; }
+		}
+	}
+
+	public abstract class UnsignedTwoByteSensor : SensorBase
+	{
+		public override int Value
+		{
+			get { return BitConverter.ToUInt16(Bytes, 0); }
+		}
+
+		public override int DataByteCount
+		{
+			get { return 2; }
+		}
+	}
+
+	public abstract class SensorBase : ISensor
+	{
+		public abstract byte PackedId { get; }
+		public abstract int DataByteCount { get; }
+
+		public byte[] Bytes { protected get; set; }
+		public abstract int Value { get; }
+
+		protected bool IsBitSet(int bitPosition)
+		{
+			return (Value & (int)Math.Pow(2, bitPosition)) != 0;
+		}
+
+		#region Sensor Packet Codes
 		public const byte All = 6;
 		public const byte Bumps_And_WheelDrops = 7;
 		public const byte Wall = 8;
@@ -39,5 +92,8 @@ namespace Dotjosh.iRobot.Framework
 		public const byte Requested_Radius = 40;
 		public const byte Requested_Right_Velocity = 41;
 		public const byte Requested_Left_Velocity = 42;
+
+		#endregion
+
 	}
 }

@@ -1,9 +1,9 @@
-﻿namespace Dotjosh.iRobot.Framework.Core
+﻿namespace Dotjosh.iRobot.Framework.Sensors
 {
 	public interface ISensor
 	{
 		byte PackedId { get; }
 		int DataByteCount { get; }
-		void Handle(byte[] newNewDataBytes);
+		byte[] Bytes { set; }
 	}
 }

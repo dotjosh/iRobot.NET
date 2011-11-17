@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Dotjosh.iRobot.Framework;
-using Dotjosh.iRobot.Framework.Core;
 using Dotjosh.iRobot.Framework.Sensors;
 using Moq;
 using NUnit.Framework;
@@ -10,7 +9,7 @@ using NUnit.Framework;
 namespace Dotjosh.iRobot.Tests
 {
 	[TestFixture]
-	public class When_starting_sensor_updates
+	public class Starting_sensor_updates
 	{
 		private RobotController _robotController;
 		private Mock<IOCommunicator> _mockIoCommunicator;
@@ -21,7 +20,7 @@ namespace Dotjosh.iRobot.Tests
 		{
 			_mockIoCommunicator = new Mock<IOCommunicator>();
 
-			var startStreamBytes = new byte[] { 148, 1, PacketIds.Bumps_And_WheelDrops };
+			var startStreamBytes = new byte[] { 148, 1, SensorBase.Bumps_And_WheelDrops };
 			_writeToIoExpectation = ioCommunicator => ioCommunicator.Write(
 														It.Is<byte[]>(bytes => BytesAreEqual(startStreamBytes, bytes)), 
 														It.Is<int>(offset => offset == 0),
@@ -34,7 +33,7 @@ namespace Dotjosh.iRobot.Tests
 			              		new BumpsAndWheelDrops()
 			              	};
 			_robotController = new RobotController(_mockIoCommunicator.Object, sensors);
-			_robotController.StartStreamingSensorUpdates();
+			_robotController.RequestSensorUpdates();
 		}
 
 		[Test]

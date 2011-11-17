@@ -1,6 +1,6 @@
 ﻿using System.IO.Ports;
 
-namespace Dotjosh.iRobot.Framework.Core
+namespace Dotjosh.iRobot.Framework
 {
 	public class SerialPortFactory
 	{

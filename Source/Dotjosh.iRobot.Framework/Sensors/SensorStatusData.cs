@@ -2,7 +2,7 @@
 using System.Linq;
 using Dotjosh.iRobot.Framework.Exceptions;
 
-namespace Dotjosh.iRobot.Framework.Core
+namespace Dotjosh.iRobot.Framework.Sensors
 {
 	public class SensorStatusData
 	{
@@ -43,7 +43,7 @@ namespace Dotjosh.iRobot.Framework.Core
 										.Skip(currentByteIndex + packedIdSize)
 										.Take(sensor.DataByteCount)
 										.ToArray();
-				sensor.Handle(sensorDataBytes);
+				sensor.Bytes = sensorDataBytes;
 				currentByteIndex += packedIdSize + sensor.DataByteCount;  //Advance to the end of the last read so we can continue to find more sensor updates if more than one came in this recieve 
 			}
 		}

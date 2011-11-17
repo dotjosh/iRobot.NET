@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Dotjosh.iRobot.Framework;
-using Dotjosh.iRobot.Framework.Core;
 using Dotjosh.iRobot.Framework.Sensors;
 using Moq;
 using NUnit.Framework;
@@ -11,7 +10,7 @@ using Should;
 namespace Dotjosh.iRobot.Tests
 {
 	[TestFixture]
-	public class When_robot_returns_sensor_updates
+	public class Robot_returns_sensor_updates
 	{
 		private RobotController _robotController;
 		private Mock<IOCommunicator> _mockIoCommunicator;
@@ -29,7 +28,7 @@ namespace Dotjosh.iRobot.Tests
 			              		_bumpsAndWheelDropsSensor
 			              	};
 			_robotController = new RobotController(_mockIoCommunicator.Object, sensors);
-			_robotController.StartStreamingSensorUpdates();
+			_robotController.RequestSensorUpdates();
 
 			byte headerByte = 19;
 			byte numOfBytesInBody = 2;
@@ -38,7 +37,7 @@ namespace Dotjosh.iRobot.Tests
 			                        	{
 			                        		headerByte, 
 											numOfBytesInBody,
-											PacketIds.Bumps_And_WheelDrops,
+											SensorBase.Bumps_And_WheelDrops,
 											dataByte
 			                        	};
 			_mockIoCommunicator.Raise(ioCommunicator => ioCommunicator.DataRecieved += null, sensorUpdateBytes);
@@ -47,7 +46,7 @@ namespace Dotjosh.iRobot.Tests
 		private static byte BitsToByte(BitArray bits)
 		{
 			if (bits.Count != 8)
-				throw new Exception("A byte has 7 bits, you only passed in " + bits.Count);
+				throw new Exception("A byte has 8 bits, wtf you only passed in " + bits.Count);
 			byte[] bytes = new byte[1];
 			bits.CopyTo(bytes, 0);
 			return bytes[0];
@@ -58,6 +57,8 @@ namespace Dotjosh.iRobot.Tests
 		{
 			_bumpsAndWheelDropsSensor.BumpLeft.ShouldBeTrue();
 			_bumpsAndWheelDropsSensor.BumpRight.ShouldBeTrue();
+			_bumpsAndWheelDropsSensor.WheelDropLeft.ShouldBeFalse();
+			_bumpsAndWheelDropsSensor.WheelDropRight.ShouldBeFalse();
 		}
 	}
 }

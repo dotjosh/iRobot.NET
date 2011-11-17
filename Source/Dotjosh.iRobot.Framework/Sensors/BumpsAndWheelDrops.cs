@@ -1,51 +1,35 @@
 namespace Dotjosh.iRobot.Framework.Sensors
 {
-	public class BumpsAndWheelDrops : StandardSensor
+	public class BumpsAndWheelDrops : OneByteSensor
 	{
-		public const int BitPosition_BumpRight = 0;
-		public const int BitPosition_BumpLeft = 1;
-		public const int BitPosition_WheeldropRight = 2;
-		public const int BitPosition_WheeldropLeft = 3;
-		public const int BitPosition_WheeldropCaster = 4;
-
 		public override byte PackedId
 		{
-			get { return PacketIds.Bumps_And_WheelDrops; }
-		}
-
-		public override int DataByteCount
-		{
-			get { return 1; }
-		}
-
-		public override int Max
-		{
-			get { return 31; }
-		}
-
-		public bool BumpLeft
-		{
-			get { return IsBitSet(BitPosition_BumpLeft); }
+			get { return Bumps_And_WheelDrops; }
 		}
 
 		public bool BumpRight
 		{
-			get { return IsBitSet(BitPosition_BumpRight); }
+			get { return IsBitSet(0); }
+		}
+
+		public bool BumpLeft
+		{
+			get { return IsBitSet(1); }
 		}
 
 		public bool WheelDropRight
 		{
-			get { return IsBitSet(BitPosition_WheeldropRight); }
+			get { return IsBitSet(2); }
 		}
 
 		public bool WheelDropLeft
 		{
-			get { return IsBitSet(BitPosition_WheeldropLeft); }
+			get { return IsBitSet(3); }
 		}
 
 		public bool WheelDropCaster
 		{
-			get { return IsBitSet(BitPosition_WheeldropCaster); }
+			get { return IsBitSet(4); }
 		}
 	}
 }

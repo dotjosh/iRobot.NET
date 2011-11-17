@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO.Ports;
+﻿using System.IO.Ports;
 using Dotjosh.iRobot.Framework.ExtensionMethods;
 
-namespace Dotjosh.iRobot.Framework.Core
+namespace Dotjosh.iRobot.Framework
 {
 	public class SerialPortIOCommunicator : IOCommunicator
 	{
