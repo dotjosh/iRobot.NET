@@ -26,5 +26,10 @@ namespace Dotjosh.iRobot.Framework.Commands
 
 			return finalBytes;
 		}
+
+		public override string ToString()
+		{
+			return GetType().Name;
+		}
 	}
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Dotjosh.iRobot.Framework.Commands;
 using Dotjosh.iRobot.Framework.Sensors;
 
@@ -48,6 +49,7 @@ namespace Dotjosh.iRobot.Framework
 		public event Action<ICommand> CommandExecuted;
 		private void OnCommandExecuted(ICommand command)
 		{
+			Debug.WriteLine("{0} sent to iRobot", command);
 			if (CommandExecuted != null)
 				CommandExecuted(command);
 		}
