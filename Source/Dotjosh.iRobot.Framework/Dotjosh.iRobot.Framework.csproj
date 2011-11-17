@@ -49,7 +49,7 @@
     <Compile Include="Core\ICommand.cs" />
     <Compile Include="Core\ISensor.cs" />
     <Compile Include="Core\RobotController.cs" />
-    <Compile Include="Core\SensorResponse.cs" />
+    <Compile Include="Core\SensorStatusData.cs" />
     <Compile Include="Core\SerialPortIOCommunicator.cs" />
     <Compile Include="ExtensionMethods\SerialPortExtensions.cs" />
     <Compile Include="Core\SerialPortFactory.cs" />

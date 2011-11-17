@@ -6,16 +6,28 @@ namespace Dotjosh.iRobot.Framework.Core
 {
 	public class RobotController : IDisposable
 	{
-		public event Action SensorsUpdated;
-
 		private readonly IOCommunicator _ioCommunicator;
 		private readonly IEnumerable<ISensor> _sensors;
 
 		public RobotController(IOCommunicator ioCommunicator, IEnumerable<ISensor> sensors)
 		{
 			_ioCommunicator = ioCommunicator;
-			_sensors = sensors;
 			_ioCommunicator.DataRecieved += IO_DataRecieved;
+			_sensors = sensors;
+		}
+
+		private void IO_DataRecieved(byte[] newBytes)
+		{
+			var sensorResponse = new SensorStatusData(newBytes);
+			sensorResponse.UpdateApplicableSensors(_sensors);
+			OnSensorsUpdated();
+		}
+
+		public event Action SensorsUpdated;
+		private void OnSensorsUpdated()
+		{
+			if (SensorsUpdated != null)
+				SensorsUpdated();
 		}
 
 		public void StartStreamingSensorUpdates()
@@ -29,18 +41,6 @@ namespace Dotjosh.iRobot.Framework.Core
 			command.Execute(_ioCommunicator);
 		}
 
-		private void IO_DataRecieved(byte[] newBytes)
-		{
-			var sensorResponse = new SensorResponse(newBytes);
-			sensorResponse.UpdateSensors(_sensors);
-			OnSensorsUpdated();
-		}
-
-		private void OnSensorsUpdated()
-		{
-			if (SensorsUpdated != null)
-				SensorsUpdated();
-		}
 
 		public void Dispose()
 		{
