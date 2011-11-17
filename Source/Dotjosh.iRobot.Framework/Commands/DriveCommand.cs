@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
@@ -24,18 +25,9 @@ namespace Dotjosh.iRobot.Framework.Commands
 		{
 			get
 			{
-				byte byAngleHi = (byte)(_angle >> 8);
-				byte byAngleLo = (byte)(_angle & 255);
-				byte bySpeedHi = (byte)(_speed >> 8);
-				byte bySpeedLo = (byte)(_speed & 255);
-
-				return new List<byte>
-				       	{
-				       		byAngleHi,
-							byAngleLo,
-							bySpeedHi,
-							bySpeedLo
-				       	};
+				return System.BitConverter.GetBytes(_angle)
+						.Union(System.BitConverter.GetBytes(_speed))
+						.ToList();
 			}
 		}
 	}
