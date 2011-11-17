@@ -1,5 +1,5 @@
 using System;
-using Dotjosh.iRobot.Tests.Core;
+using Dotjosh.iRobot.Framework.Core;
 
 namespace Dotjosh.iRobot.Tests.Sensors
 {

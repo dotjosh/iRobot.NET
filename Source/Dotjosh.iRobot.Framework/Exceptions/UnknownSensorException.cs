@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dotjosh.iRobot.Tests.Exceptions
+namespace Dotjosh.iRobot.Framework.Exceptions
 {
 	public class UnknownSensorException : Exception
 	{

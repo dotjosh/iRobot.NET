@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Dotjosh.iRobot.Tests.Core
+namespace Dotjosh.iRobot.Framework.Core
 {
 	public class SensorResponse
 	{

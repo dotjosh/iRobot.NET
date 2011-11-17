@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 
-namespace Dotjosh.iRobot.Tests.ExtensionMethods
+namespace Dotjosh.iRobot.Framework.ExtensionMethods
 {
 	public static class SerialPortExtensions
 	{

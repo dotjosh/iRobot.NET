@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Dotjosh.iRobot.Tests.Commands;
+using Dotjosh.iRobot.Framework.Commands;
 
-namespace Dotjosh.iRobot.Tests.Core
+namespace Dotjosh.iRobot.Framework.Core
 {
 	public class RobotController : IDisposable
 	{

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Dotjosh.iRobot.Tests.Commands
+namespace Dotjosh.iRobot.Framework.Commands
 {
 	public class DriveCommand : StandardCommand
 	{

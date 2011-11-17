@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Dotjosh.iRobot.Tests.Core;
+using Dotjosh.iRobot.Framework.Core;
 
-namespace Dotjosh.iRobot.Tests.Commands
+namespace Dotjosh.iRobot.Framework.Commands
 {
 	public abstract class StandardCommand : ICommand
 	{

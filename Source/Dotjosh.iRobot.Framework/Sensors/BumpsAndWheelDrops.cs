@@ -1,6 +1,7 @@
-using System;
+using Dotjosh.iRobot.Tests;
+using Dotjosh.iRobot.Tests.Sensors;
 
-namespace Dotjosh.iRobot.Tests.Sensors
+namespace Dotjosh.iRobot.Framework.Sensors
 {
 	public class BumpsAndWheelDrops : StandardSensor
 	{

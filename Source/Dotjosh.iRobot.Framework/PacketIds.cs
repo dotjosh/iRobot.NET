@@ -1,4 +1,4 @@
-namespace Dotjosh.iRobot.Tests
+namespace Dotjosh.iRobot.Framework
 {
 	public static class PacketIds
 	{

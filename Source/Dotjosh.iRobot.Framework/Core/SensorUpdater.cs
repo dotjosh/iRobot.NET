@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dotjosh.iRobot.Tests.Exceptions;
+using Dotjosh.iRobot.Framework.Exceptions;
 
-namespace Dotjosh.iRobot.Tests.Core
+namespace Dotjosh.iRobot.Framework.Core
 {
 	public class SensorUpdater
 	{

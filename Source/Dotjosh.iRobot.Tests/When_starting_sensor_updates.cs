@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Dotjosh.iRobot.Tests.Core;
+using Dotjosh.iRobot.Framework;
+using Dotjosh.iRobot.Framework.Core;
+using Dotjosh.iRobot.Framework.Sensors;
 using Dotjosh.iRobot.Tests.Sensors;
 using Moq;
 using NUnit.Framework;
