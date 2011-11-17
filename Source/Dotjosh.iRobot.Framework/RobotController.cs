@@ -17,6 +17,41 @@ namespace Dotjosh.iRobot.Framework
 			_sensors = sensors;
 		}
 
+		public void RequestSensorUpdates()
+		{
+			var startStreamCommand = new RequestSensorStream(_sensors);
+			Execute(startStreamCommand);
+		}
+
+		public void Start()
+		{
+			Execute(new Commands.StartInPassiveMode());
+			Execute(new Commands.Baud());
+		}
+
+		public void SwitchToSafeMode()
+		{
+			Execute(new Commands.SafeMode());
+		}
+
+		public void SwitchToFullMode()
+		{
+			Execute(new Commands.FullMode());
+		}
+
+		public void Execute(ICommand command)
+		{
+			command.Execute(_ioCommunicator);
+			OnCommandExecuted(command);
+		}
+
+		public event Action<ICommand> CommandExecuted;
+		private void OnCommandExecuted(ICommand command)
+		{
+			if (CommandExecuted != null)
+				CommandExecuted(command);
+		}
+
 		private void IO_DataRecieved(byte[] newBytes)
 		{
 			var sensorResponse = new SensorStatusData(newBytes);
@@ -30,18 +65,6 @@ namespace Dotjosh.iRobot.Framework
 			if (SensorsUpdated != null)
 				SensorsUpdated();
 		}
-
-		public void RequestSensorUpdates()
-		{
-			var startStreamCommand = new RequestSensorStream(_sensors);
-			Execute(startStreamCommand);
-		}
-
-		public void Execute(ICommand command)
-		{
-			command.Execute(_ioCommunicator);
-		}
-
 
 		public void Dispose()
 		{

@@ -41,10 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Baud.cs" />
     <Compile Include="Commands\Drive.cs" />
     <Compile Include="Commands\DriveStraight.cs" />
     <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\FullMode.cs" />
     <Compile Include="Commands\RequestSensorStream.cs" />
+    <Compile Include="Commands\SafeMode.cs" />
+    <Compile Include="Commands\StartInPassiveMode.cs" />
     <Compile Include="Commands\TurnInPlaceClockwise.cs" />
     <Compile Include="Commands\TurnInPlaceCounterClockwise.cs" />
     <Compile Include="ExtensionMethods\NumberExtensions.cs" />

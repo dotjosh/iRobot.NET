@@ -7,7 +7,13 @@ namespace Dotjosh.iRobot.Framework.Commands
 		protected abstract byte OpCode { get; }
 		protected abstract IList<byte> SubsequentBytes { get; }
 
-		public void Execute(IOCommunicator ioCommunicator)
+		public virtual void Execute(IOCommunicator ioCommunicator)
+		{
+			var bytes = GetBytes();
+			ioCommunicator.Write(bytes, 0, bytes.Length);
+		}
+
+		protected byte[] GetBytes()
 		{
 			var finalBytes = new byte[SubsequentBytes.Count + 1];
 			finalBytes[0] = OpCode;
@@ -18,7 +24,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 				finalBytes[++i] = currentByte;
 			}
 
-			ioCommunicator.Write(finalBytes, 0, finalBytes.Length);
+			return finalBytes;
 		}
 	}
 }
