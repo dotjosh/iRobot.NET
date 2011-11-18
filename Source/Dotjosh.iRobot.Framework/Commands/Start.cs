@@ -4,7 +4,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 {
 	public class Start : CompositeCommand
 	{
-		public override IEnumerable<ICommand> Commands
+		public override IEnumerable<IRobotCommand> Commands
 		{
 			get
 			{
@@ -14,7 +14,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 		}
 	}
 
-	public class InitialStart : Command
+	public class InitialStart : RobotCommand
 	{
 		protected override byte OpCode
 		{

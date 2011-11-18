@@ -13,10 +13,10 @@ namespace Dotjosh.iRobot.Server
 				const string serviceName = "irobotdotnet";
 				x.SetServiceName(serviceName);
 
-				x.Service<Server>(c =>
+				x.Service<WebServer>(c =>
 				{
 					c.SetServiceName(serviceName);
-					c.ConstructUsing(() => new Server());
+					c.ConstructUsing(() => new WebServer());
 					c.WhenStarted(d => d.Start());
 					c.WhenStopped(d => d.Stop());
 				});

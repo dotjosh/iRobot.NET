@@ -2,7 +2,7 @@
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public class SwitchToSafeMode : Command
+	public class SwitchToSafeMode : RobotCommand
 	{
 		protected override byte OpCode
 		{

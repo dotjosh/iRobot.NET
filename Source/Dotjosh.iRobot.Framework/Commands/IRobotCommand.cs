@@ -1,6 +1,6 @@
 ﻿namespace Dotjosh.iRobot.Framework.Commands
 {
-	public interface ICommand
+	public interface IRobotCommand
 	{
 		void Execute(IOCommunicator ioCommunicator);
 	}

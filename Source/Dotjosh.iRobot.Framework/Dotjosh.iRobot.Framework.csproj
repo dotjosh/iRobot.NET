@@ -45,7 +45,7 @@
     <Compile Include="Commands\CompositeCommand.cs" />
     <Compile Include="Commands\Drive.cs" />
     <Compile Include="Commands\DriveStraight.cs" />
-    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\RobotCommand.cs" />
     <Compile Include="Commands\SwitchToFullMode.cs" />
     <Compile Include="Commands\RequestSensorStream.cs" />
     <Compile Include="Commands\Start.cs" />
@@ -53,8 +53,7 @@
     <Compile Include="Commands\TurnInPlaceClockwise.cs" />
     <Compile Include="Commands\TurnInPlaceCounterClockwise.cs" />
     <Compile Include="ExtensionMethods\NumberExtensions.cs" />
-    <Compile Include="IOCommunicator.cs" />
-    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\IRobotCommand.cs" />
     <Compile Include="Sensors\ISensor.cs" />
     <Compile Include="RobotController.cs" />
     <Compile Include="Sensors\SensorStatusData.cs" />

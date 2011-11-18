@@ -34,6 +34,7 @@ namespace Dotjosh.iRobot.Framework
 		{
 			_serialPort = serialPort;
 			_serialPort.DataReceived += OnSerialPortDataReceived;
+			_serialPort.Open();
 		}
 
 		private void OnSerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)

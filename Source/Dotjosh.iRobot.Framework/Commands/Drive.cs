@@ -4,7 +4,7 @@ using Dotjosh.iRobot.Framework.ExtensionMethods;
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public class Drive : Command
+	public class Drive : RobotCommand
 	{
 		private readonly short _velocity;
 		private readonly short _radius;

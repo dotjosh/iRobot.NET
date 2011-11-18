@@ -2,7 +2,7 @@
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public abstract class CompositeCommand : ICommand
+	public abstract class CompositeCommand : IRobotCommand
 	{
 		public void Execute(IOCommunicator ioCommunicator)
 		{
@@ -12,6 +12,6 @@ namespace Dotjosh.iRobot.Framework.Commands
 			}
 		}
 
-		public abstract IEnumerable<ICommand> Commands { get; }
+		public abstract IEnumerable<IRobotCommand> Commands { get; }
 	}
 }

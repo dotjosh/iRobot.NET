@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public class Baud : Command
+	public class Baud : RobotCommand
 	{
 		protected override byte OpCode
 		{

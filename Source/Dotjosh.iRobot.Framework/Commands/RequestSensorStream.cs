@@ -4,7 +4,7 @@ using Dotjosh.iRobot.Framework.Sensors;
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
-	public class RequestSensorStream : Command
+	public class RequestSensorStream : RobotCommand
 	{
 		private readonly IEnumerable<ISensor> _sensors;
 
