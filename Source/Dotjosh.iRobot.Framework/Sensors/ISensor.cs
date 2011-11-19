@@ -5,5 +5,6 @@
 		byte PackedId { get; }
 		int DataByteCount { get; }
 		byte[] Bytes { set; }
+		string Name { get; }
 	}
 }

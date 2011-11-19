@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dotjosh.iRobot.Framework.Commands
 {
@@ -25,6 +27,18 @@ namespace Dotjosh.iRobot.Framework.Commands
 			}
 
 			return finalBytes;
+		}
+
+		protected IEnumerable<Byte> Bytes(short val)
+		{
+			byte[] bytes = BitConverter.GetBytes(val);
+			return bytes.Reverse();
+		}		
+		
+		protected IEnumerable<Byte> Bytes(ushort val)
+		{
+			byte[] bytes = BitConverter.GetBytes(val);
+			return bytes.Reverse();
 		}
 
 		public override string ToString()

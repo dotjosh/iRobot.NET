@@ -70,6 +70,7 @@
     <Content Include="Web\bootstrap.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Web\knockout-1.2.1.js" />
     <Content Include="Web\site.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

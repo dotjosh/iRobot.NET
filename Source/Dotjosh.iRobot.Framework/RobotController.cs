@@ -21,6 +21,11 @@ namespace Dotjosh.iRobot.Framework
 			_sensors = sensors;
 		}
 
+		public IEnumerable<ISensor> Sensors
+		{
+			get { return _sensors; }
+		}
+
 		public void RequestSensorUpdates()
 		{
 			var startStreamCommand = new RequestSensorStream(_sensors);
@@ -44,7 +49,7 @@ namespace Dotjosh.iRobot.Framework
 
 		private void IO_DataRecieved(byte[] newBytes)
 		{
-			Debug.WriteLine(newBytes.Aggregate(new StringBuilder(), (sb, b)=> sb.AppendFormat("[{0}]", b)));
+			//Debug.WriteLine(newBytes.Aggregate(new StringBuilder(), (sb, b)=> sb.AppendFormat("[{0}]", b)));
 			var sensorResponse = new SensorStatusData(newBytes);
 			sensorResponse.UpdateApplicableSensors(_sensors);
 			OnSensorsUpdated();

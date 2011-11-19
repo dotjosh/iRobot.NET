@@ -10,10 +10,6 @@
 		  <div class="fill">
 			<div class="container">
 			  <a class="brand" href="#">iRobot Controller</a>
-			  <ul class="nav">
-				<li><a href="#">Dashboard</a></li>
-				<li><a href="#configuration">Configuration</a></li>
-			  </ul>
 			</div>
 		  </div>
 		</div>
@@ -23,14 +19,35 @@
 			<div class="row">
 
 				<div class="span10">
-					<h3>The robot is healthy, well fed, and glowing.</h3>
+					<p>
+						<div data-bind="visible: isRunning">
+							<p data-bind="text: velocity"></p>
+							<p>
+								<input type="button" value="turn counterclockwise" data-bind="event: { mousedown: turnInPlaceCounterClockwise, mouseup: stop }" />
+								<input type="button" value="<- forward left" data-bind="event: { mousedown: forwardLeft, mouseup: stop }" />
+								<input type="button" value="forward /|\" data-bind="event: { mousedown: forward, mouseup: stop }" />
+								<input type="button" value="forward right ->" data-bind="event: { mousedown: forwardRight, mouseup: stop }" />
+								<input type="button" value="turn clockwise" data-bind="event: { mousedown: turnInPlaceClockwise, mouseup: stop }" />
+							</p>	
+							<p>
+								<input type="button" value="stop" data-bind="click: stop" />
+							</p>	
+							<p>
+								<input type="button" value="back \|/" data-bind="event: { mousedown: back, mouseup: stop }" />
+							</p>
+						</div>
+					</p>
 				</div>
 
 				<div class="span6">
 					<div class="well">
-						<h3>Actions</h3>
-						<p>Vestibulum id ligula porta felis euismod semper. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
-						<p><a class="btn primary">Learn more &raquo;</a></p>
+						<h3>Robot State: <span data-bind="text: status"></span></h3>
+						<p data-bind="visible: isRunning() == false">Port: <select data-bind="options: ports, value: portName" ></select></p>
+						<div data-bind="visible: isRunning">
+							Battery Life: <p data-bind="text:batteryPercentage"></p>
+						</div>
+						
+						<p><a class="btn primary" data-bind="click: toggleRunning, text: nextRunningAction"></a></p>
 					</div>
 				</div>
 
@@ -38,7 +55,14 @@
 
 		</div> 
 
+		<!--Templates-->
+		<script id="statusTemplate" type="text/x-jquery-tmpl">
+			
+		</script>
+		<!--/Template-->
+
 		<script type="text/javascript" src="jquery-1.7.min.js"></script>
+		<script type="text/javascript" src="knockout-1.2.1.js"></script>
 		<script type="text/javascript" src="site.js"></script>
 	</body>
 </html>

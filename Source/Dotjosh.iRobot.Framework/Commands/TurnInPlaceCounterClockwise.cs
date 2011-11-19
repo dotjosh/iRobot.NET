@@ -17,8 +17,8 @@ namespace Dotjosh.iRobot.Framework.Commands
 		{
 			get
 			{
-				return System.BitConverter.GetBytes(_velocity)
-					.Union(System.BitConverter.GetBytes((short)1))
+				return Bytes(_velocity)
+					.Concat(Bytes(1))
 					.ToList();
 			}
 		}

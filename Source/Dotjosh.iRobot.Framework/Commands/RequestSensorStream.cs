@@ -25,7 +25,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 				var sensorCount = new[]{ (byte) _sensors.Count() };
 				var sensorPacketIds = _sensors.Select(sensor => sensor.PackedId);
 				return sensorCount
-						.Union(sensorPacketIds)
+						.Concat(sensorPacketIds)
 						.ToList();
 			}
 		}

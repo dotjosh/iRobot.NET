@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO.Ports;
-using System.Linq;
-using System.Threading;
 using Dotjosh.iRobot.Framework;
 using Dotjosh.iRobot.Framework.Commands;
 using Dotjosh.iRobot.Framework.Sensors;
@@ -14,66 +11,76 @@ namespace Dotjosh.iRobot.Server
 {
 	public class WebServerController : NancyModule
 	{
-		public static RobotController RobotController { get; set; }
-
-
 		public WebServerController()
 		{
-			Get[@"/"] = x =>
-			            	{
-								return new GenericFileResponse("Web/index.html");
-			            	};
+			Get[@"/"] = x => new GenericFileResponse("Web/index.html");
 
 			Get[@"/(?<fileName>[a-zA-Z0-9-\.]+(?<extension>[.]js|[.]css|[.]png|[.]html))"] = x =>
-			                                               	{
-			                                               		var fileName = ((string) x.fileName);
-			                                               		var relativeFileName = String.Format("Web/{0}",fileName);
-		                                               			return new GenericFileResponse(relativeFileName);
-			                                               	};
+			{
+			    var fileName = ((string) x.fileName);
+			    var relativeFileName = String.Format("Web/{0}",fileName);
+		        return new GenericFileResponse(relativeFileName);
+			};
+		}
+	}
 
-			Get[@"/API/GetPortNames"] = x =>
-			                                            	{
-																string[] ports = SerialPort.GetPortNames();
-																return Response.AsJson(ports);
-			                                             	};
+	public class APIController : NancyModule
+	{
+		public APIController() : base("/API")
+		{
+			Get[@"/State"] = x =>
+			{
+				return Response.AsJson(
+					new
+						{
+							IsRunning = RobotController != null,
+							Sensors = RobotController != null ? RobotController.Sensors : new ISensor[] {},
+							Ports =  SerialPort.GetPortNames()
+						}							
+				);
+			};
 
-			Get[@"/API/Start"] = x =>
-			                                            	{
-																if(RobotController != null)
-																	throw new Exception("Robot is already running.  Please use /API/Stop");
+			Post[@"/Start"] = x =>
+			{
+				if(RobotController != null)
+					return "";
 
-																RobotController = RobotController.CreateWithAllSensors((string)Request.Query.portName);
-																RobotController.CommandExecuted += command =>
-			                                   														{
-			                                   															Console.WriteLine(command.ToString());
-			                                   														};
-																RobotController.Execute(new Start());
-																RobotController.Execute(new SwitchToFullMode());
+				RobotController = RobotController.CreateWithAllSensors((string)Request.Form.portName);
+				RobotController.Execute(new Start());
+				RobotController.Execute(new SwitchToFullMode());
 																
-																RobotController.RequestSensorUpdates();
-																return new Response();
-			                                             	};
+				RobotController.RequestSensorUpdates();
+				return new Response();
+			};
 
-			Get[@"/API/Stop"] = x =>
-			                                            	{
-																if(RobotController != null)
-																{
-																	RobotController.Dispose();
-																	RobotController = null;
-																}
+			Post[@"/Stop"] = x =>
+			{
+				if(RobotController != null)
+				{
+					RobotController.Dispose();
+					RobotController = null;
+				}
 
-																return new Response();
-			                                             	};
+				return new Response();
+			};
 
-			Get[@"/API/ExecuteCommand/{commandName}"] = x =>
-			                                            	{
-																if(RobotController == null)
-																	throw new Exception("Robot must be started first.  Please use /API/Start");
+			Post[@"/Commands/{commandName}"] = x =>
+			{
+				if(RobotController == null)
+					return "";
 
-			                                            		IRobotCommand command = this.Bind();
-																RobotController.Execute(command);
-			                                            		return new Response();
-			                                            	};
+			    IRobotCommand command = this.Bind();
+				RobotController.Execute(command);
+			    return new Response();
+			};		
+		}
+
+		public static RobotController RobotController { get; set; }
+
+		private static void EnsureRobotIsRunning()
+		{
+			if (RobotController == null)
+				throw new Exception("Robot must be started first.  Please use /API/Start");
 		}
 	}
 }

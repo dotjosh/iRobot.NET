@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 
@@ -10,9 +11,18 @@ namespace Dotjosh.iRobot.Framework.ExtensionMethods
 		public static byte[] ReadSample(this SerialPort serialPort)
 		{
 			int starterByte = serialPort.ReadByte();
-			while(starterByte != 19)
+			while(starterByte != 19 && serialPort.IsOpen)
 			{
-				starterByte = serialPort.ReadByte();
+				if(!serialPort.IsOpen)
+					return new byte[]{};
+				try
+				{
+					starterByte = serialPort.ReadByte();
+				}
+				catch (IOException ex)
+				{
+					return new byte[] {};
+				}
 			}
 			int bytesLeftToReadAndChecksum = serialPort.ReadByte() + 1;
 

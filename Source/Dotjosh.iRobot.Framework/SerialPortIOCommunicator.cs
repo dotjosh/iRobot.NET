@@ -46,6 +46,8 @@ namespace Dotjosh.iRobot.Framework
 
 		public void Write(byte[] bytes, int offset, int length)
 		{
+			if(!_serialPort.IsOpen)
+				return;
 			_serialPort.Write(bytes, offset, length);
 		}
 

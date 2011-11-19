@@ -30,31 +30,31 @@ namespace Dotjosh.iRobot.Server
 			                                       	{
 			                                       		if(p.ParameterType == typeof(Byte))
 			                                       		{
-			                                       			return Byte.Parse(context.Request.Query[p.Name]);
+			                                       			return Byte.Parse(context.Request.Form[p.Name]);
 			                                       		}
 			                                       		if(p.ParameterType == typeof(short))
 			                                       		{
-			                                       			return short.Parse(context.Request.Query[p.Name]);
+			                                       			return short.Parse(context.Request.Form[p.Name]);
 			                                       		}
 			                                       		if(p.ParameterType == typeof(ushort))
 			                                       		{
-			                                       			return ushort.Parse(context.Request.Query[p.Name]);
+			                                       			return ushort.Parse(context.Request.Form[p.Name]);
 			                                       		}
 			                                       		if(p.ParameterType == typeof(Int16))
 			                                       		{
-			                                       			return Int16.Parse(context.Request.Query[p.Name]);
+			                                       			return Int16.Parse(context.Request.Form[p.Name]);
 			                                       		}
 			                                       		if(p.ParameterType == typeof(UInt16))
 			                                       		{
-			                                       			return UInt16.Parse(context.Request.Query[p.Name]);
+			                                       			return UInt16.Parse(context.Request.Form[p.Name]);
 			                                       		}
 			                                       		if(p.ParameterType == typeof(Int32))
 			                                       		{
-			                                       			return Int32.Parse(context.Request.Query[p.Name]);
+			                                       			return Int32.Parse(context.Request.Form[p.Name]);
 			                                       		}
 			                                       		if(p.ParameterType == typeof(UInt32))
 			                                       		{
-			                                       			return UInt32.Parse(context.Request.Query[p.Name]);
+			                                       			return UInt32.Parse(context.Request.Form[p.Name]);
 			                                       		}
 			                                       		throw new Exception();
 			                                       	}

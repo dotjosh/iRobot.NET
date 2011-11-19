@@ -46,12 +46,23 @@ namespace Dotjosh.iRobot.Framework.Sensors
 		public abstract byte PackedId { get; }
 		public abstract int DataByteCount { get; }
 
-		public byte[] Bytes { protected get; set; }
+		private byte[] _bytes = new byte[2];
+		public byte[] Bytes
+		{
+			protected get { return _bytes; }
+			set { _bytes = value; }
+		}
+
 		public abstract int Value { get; }
 
 		protected bool IsBitSet(int bitPosition)
 		{
 			return (Value & (int)Math.Pow(2, bitPosition)) != 0;
+		}
+
+		public string Name
+		{
+			get { return GetType().Name; }
 		}
 
 		#region Sensor Packet Codes
