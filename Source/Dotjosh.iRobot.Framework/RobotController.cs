@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Timers;
 using Dotjosh.iRobot.Framework.Commands;
 using Dotjosh.iRobot.Framework.Sensors;
 
@@ -21,8 +22,14 @@ namespace Dotjosh.iRobot.Framework
 
 		public void RequestSensorUpdates()
 		{
-			var startStreamCommand = new RequestSensorStream(_sensors);
-			Execute(startStreamCommand);
+			var timer = new Timer();
+			timer.Interval = 1000;
+			timer.Elapsed += (sender, args) =>
+			                 	{
+									Execute(new RequestSensorData());
+			                 	};
+			timer.Start();
+
 		}
 
 		public void Execute(IRobotCommand command)
@@ -41,6 +48,8 @@ namespace Dotjosh.iRobot.Framework
 
 		private void IO_DataRecieved(byte[] newBytes)
 		{
+			if(newBytes.Length<=1)
+				return;
 			var sensorResponse = new SensorStatusData(newBytes);
 			sensorResponse.UpdateApplicableSensors(_sensors);
 			OnSensorsUpdated();

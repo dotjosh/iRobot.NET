@@ -11,10 +11,8 @@ namespace Dotjosh.iRobot.Framework.ExtensionMethods
 			var result = new List<byte>();
 			byte[] buffer = new byte[16*1024];
 			int bytesRead;
-			while((bytesRead = serialPort.Read(buffer, 0, buffer.Length)) > 0)
-			{
-				result.AddRange(buffer.ToList().GetRange(0, bytesRead));
-			}
+			bytesRead = serialPort.Read(buffer, 0, buffer.Length);
+			result.AddRange(buffer.ToList().GetRange(0, bytesRead));
 			return result.ToArray();
 		}
 	}

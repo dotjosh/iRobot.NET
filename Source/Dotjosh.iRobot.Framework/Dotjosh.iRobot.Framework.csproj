@@ -45,6 +45,7 @@
     <Compile Include="Commands\CompositeCommand.cs" />
     <Compile Include="Commands\Drive.cs" />
     <Compile Include="Commands\DriveStraight.cs" />
+    <Compile Include="Commands\RequestSensorData.cs" />
     <Compile Include="Commands\RobotCommand.cs" />
     <Compile Include="Commands\SwitchToFullMode.cs" />
     <Compile Include="Commands\RequestSensorStream.cs" />

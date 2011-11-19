@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Dotjosh.iRobot.Framework.Exceptions;
 
@@ -36,7 +37,8 @@ namespace Dotjosh.iRobot.Framework.Sensors
 				var sensor = sensors.FirstOrDefault(s => s.PackedId == packetId);
 				if (sensor == null)
 				{
-					throw new UnknownSensorException(packetId);
+					Trace.WriteLine("Could not find sensor with packet id " + packetId);
+					return;
 				}
 				const int packedIdSize = 1;
 				var sensorDataBytes = Body

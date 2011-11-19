@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO.Ports;
+using System.Timers;
 using Dotjosh.iRobot.Framework.ExtensionMethods;
 
 namespace Dotjosh.iRobot.Framework
