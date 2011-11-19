@@ -41,7 +41,7 @@ namespace Dotjosh.iRobot.Framework
 		private void OnSerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
 		{
 			if (DataRecieved != null)
-				DataRecieved(_serialPort.ReadAll());
+				DataRecieved(_serialPort.ReadSample());
 		}
 
 		public void Write(byte[] bytes, int offset, int length)

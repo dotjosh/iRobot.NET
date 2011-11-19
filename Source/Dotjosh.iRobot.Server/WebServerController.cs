@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Threading;
 using Dotjosh.iRobot.Framework;
 using Dotjosh.iRobot.Framework.Commands;
 using Dotjosh.iRobot.Framework.Sensors;
@@ -46,6 +47,9 @@ namespace Dotjosh.iRobot.Server
 			                                   														{
 			                                   															Console.WriteLine(command.ToString());
 			                                   														};
+																RobotController.Execute(new Start());
+																RobotController.Execute(new SwitchToFullMode());
+																
 																RobotController.RequestSensorUpdates();
 																return new Response();
 			                                             	};

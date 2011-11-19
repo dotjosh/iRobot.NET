@@ -14,26 +14,11 @@ namespace Dotjosh.iRobot.Framework.Sensors
 			_bytes = bytes;
 		}
 
-		public byte Header 
-		{
-			get { return _bytes[0]; } 
-		}
-
-		public int BodyLength
-		{
-			get { return _bytes[1]; }
-		}
-
-		public byte[] Body
-		{
-			get { return _bytes.Skip(2).Take(BodyLength).ToArray(); }
-		}
-
 		public void UpdateApplicableSensors(IEnumerable<ISensor> sensors)
 		{
-			for (var currentByteIndex = 0; currentByteIndex < Body.Length; )
+			for (var currentByteIndex = 0; currentByteIndex < _bytes.Length; )
 			{
-				var packetId = Body[currentByteIndex];
+				var packetId = _bytes[currentByteIndex];
 				var sensor = sensors.FirstOrDefault(s => s.PackedId == packetId);
 				if (sensor == null)
 				{
@@ -41,7 +26,7 @@ namespace Dotjosh.iRobot.Framework.Sensors
 					return;
 				}
 				const int packedIdSize = 1;
-				var sensorDataBytes = Body
+				var sensorDataBytes = _bytes
 										.Skip(currentByteIndex + packedIdSize)
 										.Take(sensor.DataByteCount)
 										.ToArray();
