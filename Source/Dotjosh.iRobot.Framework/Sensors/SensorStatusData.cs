@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Dotjosh.iRobot.Framework.Exceptions;
 
 namespace Dotjosh.iRobot.Framework.Sensors
 {

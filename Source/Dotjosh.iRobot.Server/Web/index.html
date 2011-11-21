@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<link type="text/css" rel="stylesheet" href="bootstrap.css" />
+		<link type="text/css" rel="stylesheet" href="redmond/jquery-ui-1.8.16.custom.css" />
 		<link type="text/css" rel="stylesheet" href="site.css" />
 	</head>
 	<body>
@@ -14,26 +15,28 @@
 		  </div>
 		</div>
 
-		<div class="container" id="mainContent">
+		<div class="container" id="mainContent" style="display:none;">
 
 			<div class="row">
 
 				<div class="span10">
 					<p>
-						<div data-bind="visible: isRunning">
-							<p data-bind="text: velocity"></p>
+						<div class="movementButtons" data-bind="visible: isConnected" style="margin: auto;width:270px">
+							<p style="text-align: center;">Velocity: <span data-bind="text: velocity"></span></p>
 							<p>
-								<input type="button" value="turn counterclockwise" data-bind="event: { mousedown: turnInPlaceCounterClockwise, mouseup: stop }" />
-								<input type="button" value="<- forward left" data-bind="event: { mousedown: forwardLeft, mouseup: stop }" />
-								<input type="button" value="forward /|\" data-bind="event: { mousedown: forward, mouseup: stop }" />
-								<input type="button" value="forward right ->" data-bind="event: { mousedown: forwardRight, mouseup: stop }" />
-								<input type="button" value="turn clockwise" data-bind="event: { mousedown: turnInPlaceClockwise, mouseup: stop }" />
+								<input type="button" value="&larr; &uarr; " data-bind="event: { mousedown: forwardLeft, mouseup: stop }" />
+								<input type="button" value="&uarr;" data-bind="event: { mousedown: forward, mouseup: stop }" />
+								<input type="button" value="&uarr; &rarr;" data-bind="event: { mousedown: forwardRight, mouseup: stop }" />								
 							</p>	
 							<p>
+								<input type="button" value="&larr;" data-bind="event: { mousedown: turnInPlaceCounterClockwise, mouseup: stop }" />
 								<input type="button" value="stop" data-bind="click: stop" />
+								<input type="button" value="&rarr;" data-bind="event: { mousedown: turnInPlaceClockwise, mouseup: stop }" />
 							</p>	
 							<p>
-								<input type="button" value="back \|/" data-bind="event: { mousedown: back, mouseup: stop }" />
+								<input type="button" value="&larr; &darr;" data-bind="event: { mousedown: backLeft, mouseup: stop }" />
+								<input type="button" value="&darr;" data-bind="event: { mousedown: back, mouseup: stop }" />
+								<input type="button" value="&darr; &rarr;" data-bind="event: { mousedown: backRight, mouseup: stop }" />
 							</p>
 						</div>
 					</p>
@@ -41,13 +44,24 @@
 
 				<div class="span6">
 					<div class="well">
-						<h3>Robot State: <span data-bind="text: status"></span></h3>
-						<p data-bind="visible: isRunning() == false">Port: <select data-bind="options: ports, value: portName" ></select></p>
-						<div data-bind="visible: isRunning">
-							Battery Life: <p data-bind="text:batteryPercentage"></p>
+						<h3><span data-bind="text: status"></span></h3>
+						<p data-bind="visible: isConnected() == false">Port: <select data-bind="options: ports, value: portName" ></select></p>
+						<div data-bind="visible: isConnected">
+							<div>
+								Sensor Stream: 
+								<a class="btn" data-bind="click: startStream, visible: isStreaming() == false">Start</a>
+								<a class="btn" data-bind="click: stopStream, visible: isStreaming() == true">Stop</a>
+							</div>
+							<div data-bind="visible: isStreaming() == true">
+								<p>Battery Life: <p data-bind="text:batteryPercentage"></p>
+								<p>Bump Right: <p data-bind="text:bumpRight"></p>
+								<p>Bump Left: <p data-bind="text:bumpLeft"></p>
+								<p>Cliff Left: <p data-bind="text:cliffLeft"></p>
+								<p>Cliff Right: <p data-bind="text:cliffRight"></p>
+							</div>
 						</div>
 						
-						<p><a class="btn primary" data-bind="click: toggleRunning, text: nextRunningAction"></a></p>
+						<p><a class="btn primary" data-bind="click: toggleConnected, text: nextRunningAction, enable: portName() != ''"></a></p>
 					</div>
 				</div>
 
@@ -63,6 +77,7 @@
 
 		<script type="text/javascript" src="jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="knockout-1.2.1.js"></script>
+		<script type="text/javascript" src="jquery-ui-1.8.16.custom.min.js"></script>
 		<script type="text/javascript" src="site.js"></script>
 	</body>
 </html>

@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading;
-using Dotjosh.iRobot.Framework;
-using Dotjosh.iRobot.Framework.Sensors;
 using Nancy.Hosting.Self;
 using Nancy.Responses;
 
@@ -46,19 +41,6 @@ namespace Dotjosh.iRobot.Server
 				return;
 			_nancyHost.Stop();
 			_nancyHost = null;
-		}
-
-		public class FakeIOCommunicator : IOCommunicator
-		{
-			public void Dispose()
-			{
-			
-			}
-
-			public event DataRecievedHandler DataRecieved;
-			public void Write(byte[] bytes, int offset, int length)
-			{
-			}
 		}
 	}
 }

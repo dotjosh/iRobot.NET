@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Timers;
 using Dotjosh.iRobot.Framework.Commands;
 using Dotjosh.iRobot.Framework.Sensors;
 
@@ -26,25 +24,32 @@ namespace Dotjosh.iRobot.Framework
 			get { return _sensors; }
 		}
 
-		public void RequestSensorUpdates()
+		public bool IsConnected
+		{
+			get { return _ioCommunicator.IsConnected; }
+		}
+
+		public void StartSensorStream()
 		{
 			var startStreamCommand = new RequestSensorStream(_sensors);
 			Execute(startStreamCommand);
+		}
 
+		public void StopSensorStream()
+		{
+			var pauseStreamCommand = new PauseSensorStream();
+			Execute(pauseStreamCommand);
+		}
+
+		public bool SensorStreamIsRunning
+		{
+			get { return DateTime.Now - TimeSpan.FromSeconds(1) < LastDataRecieved; }
 		}
 
 		public void Execute(IRobotCommand command)
 		{
 			command.Execute(_ioCommunicator);
-			OnCommandExecuted(command);
-		}
-
-		public event Action<IRobotCommand> CommandExecuted;
-		private void OnCommandExecuted(IRobotCommand command)
-		{
 			Debug.WriteLine("{0} sent to iRobot", command);
-			if (CommandExecuted != null)
-				CommandExecuted(command);
 		}
 
 		private void IO_DataRecieved(byte[] newBytes)
@@ -52,15 +57,10 @@ namespace Dotjosh.iRobot.Framework
 			//Debug.WriteLine(newBytes.Aggregate(new StringBuilder(), (sb, b)=> sb.AppendFormat("[{0}]", b)));
 			var sensorResponse = new SensorStatusData(newBytes);
 			sensorResponse.UpdateApplicableSensors(_sensors);
-			OnSensorsUpdated();
+			LastDataRecieved = DateTime.Now;
 		}
 
-		public event Action SensorsUpdated;
-		private void OnSensorsUpdated()
-		{
-			if (SensorsUpdated != null)
-				SensorsUpdated();
-		}
+		protected DateTime? LastDataRecieved { get; set; }
 
 		public void Dispose()
 		{

@@ -33,7 +33,7 @@ namespace Dotjosh.iRobot.Tests
 			              		new BumpsAndWheelDrops()
 			              	};
 			_robotController = new RobotController(_mockIoCommunicator.Object, sensors);
-			_robotController.RequestSensorUpdates();
+			_robotController.StartSensorStream();
 		}
 
 		[Test]

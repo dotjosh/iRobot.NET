@@ -28,15 +28,11 @@ namespace Dotjosh.iRobot.Tests
 			              		_bumpsAndWheelDropsSensor
 			              	};
 			_robotController = new RobotController(_mockIoCommunicator.Object, sensors);
-			_robotController.RequestSensorUpdates();
+			_robotController.StartSensorStream();
 
-			byte headerByte = 19;
-			byte numOfBytesInBody = 2;
 			byte dataByte = BitsToByte(new BitArray(new[] {true, true, false, false, false, false, false, false}));
 			var sensorUpdateBytes = new[]
 			                        	{
-			                        		headerByte, 
-											numOfBytesInBody,
 											Sensor.Bumps_And_WheelDrops,
 											dataByte
 			                        	};

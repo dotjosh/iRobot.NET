@@ -1,5 +1,5 @@
 ﻿var viewModel = {
-	robotState: ko.observable({ IsRunning: false, Sensors: [] }),
+	robotState: ko.observable({ IsConnected: false, IsStreaming: false, Sensors: [] }),
 	portName: ko.observable(),
 	velocity: ko.observable(100),
 	increaseVelocity: function () {
@@ -15,13 +15,39 @@
 		}
 		this.velocity(this.velocity() - 50);
 	},
-	toggleRunning: function () {
+	toggleConnected: function () {
 		$.ajax({
 			type: 'POST',
-			url: this.robotState().IsRunning ? "/API/Stop" : "/API/Start",
+			url: this.robotState().IsConnected ? "/API/Disconnect" : "/API/Connect",
 			data: "portName=" + this.portName(),
 			success: function () {
 
+			},
+			error: function (ex) {
+				console.log(ex);
+				alert("Server returned an error");
+			}
+		});
+	},
+	startStream: function () {
+		$.ajax({
+			type: 'POST',
+			url: "/API/StartStream",
+			success: function () {
+
+			},
+			error: function (ex) {
+				console.log(ex);
+				alert("Server returned an error");
+			}
+		});
+	},
+	stopStream: function () {
+		$.ajax({
+			type: 'POST',
+			url: "/API/StopStream",
+			success: function () {
+				
 			},
 			error: function (ex) {
 				console.log(ex);
@@ -102,14 +128,17 @@
 
 	}
 };
-viewModel.isRunning = ko.dependentObservable(function () {
-	return this.robotState().IsRunning;
+viewModel.isConnected = ko.dependentObservable(function () {
+	return this.robotState().IsConnected;
+}, viewModel);
+viewModel.isStreaming = ko.dependentObservable(function () {
+	return this.robotState().IsStreaming;
 }, viewModel);
 viewModel.status = ko.dependentObservable(function () {
-	return this.robotState().IsRunning ? "RUNNING" : "NOT RUNNING";
+	return this.robotState().IsConnected ? "CONNECTED" : "DISCONNECTED";
 }, viewModel);
 viewModel.nextRunningAction = ko.dependentObservable(function () {
-	return this.robotState().IsRunning ? "Stop" : "Start";
+	return this.robotState().IsConnected ? "Disconnect" : "Connect";
 }, viewModel);
 viewModel.ports = ko.dependentObservable(function () {
 	return this.robotState().Ports;
@@ -119,6 +148,42 @@ viewModel.batteryPercentage = ko.dependentObservable(function () {
 	this.robotState().Sensors.forEach(function(item) {
 		if (item.Name == "BatteryCharge") {
 			result = item.Percentage + "%";
+		}
+	});
+	return result;
+}, viewModel);
+viewModel.cliffLeft = ko.dependentObservable(function () {
+	var result = "Unknown";
+	this.robotState().Sensors.forEach(function(item) {
+		if (item.Name == "CliffLeft") {
+			result = item.IsCliff;
+		}
+	});
+	return result;
+}, viewModel);
+viewModel.cliffRight = ko.dependentObservable(function () {
+	var result = "Unknown";
+	this.robotState().Sensors.forEach(function(item) {
+		if (item.Name == "CliffRight") {
+			result = item.IsCliff;
+		}
+	});
+	return result;
+}, viewModel);
+viewModel.bumpLeft = ko.dependentObservable(function () {
+	var result = "Unknown";
+	this.robotState().Sensors.forEach(function(item) {
+		if (item.Name == "BumpsAndWheelDrops") {
+			result = item.BumpLeft;
+		}
+	});
+	return result;
+}, viewModel);
+viewModel.bumpRight = ko.dependentObservable(function () {
+	var result = "Unknown";
+	this.robotState().Sensors.forEach(function(item) {
+		if (item.Name == "BumpsAndWheelDrops") {
+			result = item.BumpRight;
 		}
 	});
 	return result;
@@ -166,7 +231,7 @@ $(function () {
 			viewModel.decreaseVelocity();
 		Key.onKeydown(ev);
 	});
-
+	$("#mainContent").show();
 })
 
 function startEventLoop() {

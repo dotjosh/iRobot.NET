@@ -2,7 +2,7 @@
 
 namespace Dotjosh.iRobot.Framework.ExtensionMethods
 {
-	public static class NumberExtensions
+	public static class AssertionExtensions
 	{
 		public static void AssertRange(this short number, short min, short max)
 		{

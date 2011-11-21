@@ -33,14 +33,15 @@ namespace Dotjosh.iRobot.Server
 				return Response.AsJson(
 					new
 						{
-							IsRunning = RobotController != null,
+							IsConnected = RobotController != null && RobotController.IsConnected,
+							IsStreaming = RobotController != null && RobotController.SensorStreamIsRunning,
 							Sensors = RobotController != null ? RobotController.Sensors : new ISensor[] {},
 							Ports =  SerialPort.GetPortNames()
 						}							
 				);
 			};
 
-			Post[@"/Start"] = x =>
+			Post[@"/Connect"] = x =>
 			{
 				if(RobotController != null)
 					return "";
@@ -48,12 +49,10 @@ namespace Dotjosh.iRobot.Server
 				RobotController = RobotController.CreateWithAllSensors((string)Request.Form.portName);
 				RobotController.Execute(new Start());
 				RobotController.Execute(new SwitchToFullMode());
-																
-				RobotController.RequestSensorUpdates();
 				return new Response();
 			};
 
-			Post[@"/Stop"] = x =>
+			Post[@"/Disconnect"] = x =>
 			{
 				if(RobotController != null)
 				{
@@ -61,6 +60,24 @@ namespace Dotjosh.iRobot.Server
 					RobotController = null;
 				}
 
+				return new Response();
+			};
+
+			Post[@"/StartStream"] = x =>
+			{
+			    if (RobotController != null)
+			    {
+			        RobotController.StartSensorStream();
+			    }
+				return new Response();
+			};
+
+			Post[@"/StopStream"] = x =>
+			{
+			    if (RobotController != null)
+			    {
+			        RobotController.StopSensorStream();
+			    }
 				return new Response();
 			};
 
@@ -76,11 +93,5 @@ namespace Dotjosh.iRobot.Server
 		}
 
 		public static RobotController RobotController { get; set; }
-
-		private static void EnsureRobotIsRunning()
-		{
-			if (RobotController == null)
-				throw new Exception("Robot must be started first.  Please use /API/Start");
-		}
 	}
 }

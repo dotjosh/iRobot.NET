@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.IO.Ports;
-using System.Timers;
-using Dotjosh.iRobot.Framework.ExtensionMethods;
+using System.Linq;
 
 namespace Dotjosh.iRobot.Framework
 {
@@ -36,19 +37,70 @@ namespace Dotjosh.iRobot.Framework
 			_serialPort = serialPort;
 			_serialPort.DataReceived += OnSerialPortDataReceived;
 			_serialPort.Open();
+			LastCommunicationWasSuccessful = true;
 		}
 
 		private void OnSerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
 		{
-			if (DataRecieved != null)
-				DataRecieved(_serialPort.ReadSample());
+			try
+			{
+				if (DataRecieved != null)
+					DataRecieved(ReadLineOfData());
+				LastCommunicationWasSuccessful = true;
+			}			
+			catch (IOException ex)
+			{
+				LastCommunicationWasSuccessful = false;
+				Trace.WriteLine(ex);
+			}
+		}
+
+		protected bool LastCommunicationWasSuccessful { get; set; }
+
+		public bool IsConnected
+		{
+			get { return  _serialPort.IsOpen && LastCommunicationWasSuccessful; }
 		}
 
 		public void Write(byte[] bytes, int offset, int length)
 		{
-			if(!_serialPort.IsOpen)
-				return;
-			_serialPort.Write(bytes, offset, length);
+			try
+			{
+				_serialPort.Write(bytes, offset, length);
+				LastCommunicationWasSuccessful = true;
+			}
+			catch (IOException ex)
+			{
+				LastCommunicationWasSuccessful = false;
+				Trace.WriteLine(ex);
+			}
+		}
+
+		private byte[] ReadLineOfData()
+		{
+			var headerByte = _serialPort.ReadByte();
+			while(headerByte != 19 && _serialPort.IsOpen)
+			{
+				if(!_serialPort.IsOpen)
+					throw new IOException();
+				headerByte = _serialPort.ReadByte();
+			}
+			var bytesLeftToReadAndChecksum = _serialPort.ReadByte() + 1;
+			var result = new byte[bytesLeftToReadAndChecksum];
+			var bytesRead = 0;
+			var indexInResult = 0;
+			while(bytesRead < bytesLeftToReadAndChecksum)
+			{
+				byte[] buffer = new byte[1024];
+				var thisBytesRead = _serialPort.Read(buffer, 0, bytesLeftToReadAndChecksum - bytesRead);
+				bytesRead += thisBytesRead;
+				if(thisBytesRead > 0)
+				{
+					Array.Copy(buffer, 0, result, indexInResult, thisBytesRead);
+					indexInResult += thisBytesRead;
+				}
+			}
+			return result.Take(bytesLeftToReadAndChecksum - 1).ToArray();
 		}
 
 		public void Dispose()
@@ -70,6 +122,7 @@ namespace Dotjosh.iRobot.Framework
 	public interface IOCommunicator : IDisposable  
 	{
 		event DataRecievedHandler DataRecieved;
+		bool IsConnected { get; }
 		void Write(byte[] bytes, int offset, int length);
 	}
 }
