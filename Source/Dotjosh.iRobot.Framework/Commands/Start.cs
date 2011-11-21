@@ -16,7 +16,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 
 	public class InitialStart : RobotCommand
 	{
-		protected override byte OpCode
+		protected override byte Opcode
 		{
 			get { return 128; }
 		}

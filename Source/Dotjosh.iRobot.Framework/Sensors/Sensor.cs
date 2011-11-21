@@ -50,7 +50,16 @@ namespace Dotjosh.iRobot.Framework.Sensors
 		public byte[] Bytes
 		{
 			protected get { return _bytes; }
-			set { _bytes = value; }
+			set
+			{
+				_bytes = value;
+				OnBytesUpdated();
+			}
+		}
+
+		protected virtual void OnBytesUpdated()
+		{
+			
 		}
 
 		public abstract int Value { get; }

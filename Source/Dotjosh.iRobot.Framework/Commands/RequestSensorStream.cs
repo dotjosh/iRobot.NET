@@ -13,7 +13,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 			_sensors = sensors;
 		}
 
-		protected override byte OpCode
+		protected override byte Opcode
 		{
 			get { return 148; }
 		}

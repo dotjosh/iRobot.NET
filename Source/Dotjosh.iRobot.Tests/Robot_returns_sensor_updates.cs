@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Dotjosh.iRobot.Framework;
+using Dotjosh.iRobot.Framework.ExtensionMethods;
 using Dotjosh.iRobot.Framework.Sensors;
 using Moq;
 using NUnit.Framework;
@@ -30,7 +31,7 @@ namespace Dotjosh.iRobot.Tests
 			_robotController = new RobotController(_mockIoCommunicator.Object, sensors);
 			_robotController.StartSensorStream();
 
-			byte dataByte = BitsToByte(new BitArray(new[] {true, true, false, false, false, false, false, false}));
+			byte dataByte = new BitArray(new[] {true, true, false, false, false, false, false, false}).ToByte();
 			var sensorUpdateBytes = new[]
 			                        	{
 											Sensor.Bumps_And_WheelDrops,
@@ -39,14 +40,6 @@ namespace Dotjosh.iRobot.Tests
 			_mockIoCommunicator.Raise(ioCommunicator => ioCommunicator.DataRecieved += null, sensorUpdateBytes);
 		}
 
-		private static byte BitsToByte(BitArray bits)
-		{
-			if (bits.Count != 8)
-				throw new Exception("A byte has 8 bits, wtf you only passed in " + bits.Count);
-			byte[] bytes = new byte[1];
-			bits.CopyTo(bytes, 0);
-			return bytes[0];
-		}
 
 		[Test]
 		public void Sensor_is_updated_as_expected()

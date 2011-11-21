@@ -19,7 +19,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 			_radius = radius;
 		}
 
-		protected override byte OpCode
+		protected override byte Opcode
 		{
 			get { return 137; }
 		}

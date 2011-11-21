@@ -4,7 +4,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 {
 	public class SwitchToFullMode : RobotCommand
 	{
-		protected override byte OpCode
+		protected override byte Opcode
 		{
 			get { return 132; }
 		}

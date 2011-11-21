@@ -5,7 +5,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 {
 	public class RequestSensorData : RobotCommand
 	{
-		protected override byte OpCode
+		protected override byte Opcode
 		{
 			get { return 142; }
 		}

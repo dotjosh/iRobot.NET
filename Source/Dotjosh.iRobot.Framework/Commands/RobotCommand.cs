@@ -6,7 +6,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 {
 	public abstract class RobotCommand : IRobotCommand
 	{
-		protected abstract byte OpCode { get; }
+		protected abstract byte Opcode { get; }
 		protected abstract IList<byte> SubsequentBytes { get; }
 
 		public virtual void Execute(IOCommunicator ioCommunicator)
@@ -18,7 +18,7 @@ namespace Dotjosh.iRobot.Framework.Commands
 		protected byte[] GetBytes()
 		{
 			var finalBytes = new byte[SubsequentBytes.Count + 1];
-			finalBytes[0] = OpCode;
+			finalBytes[0] = Opcode;
 
 			var i = 0;
 			foreach (var currentByte in SubsequentBytes)
