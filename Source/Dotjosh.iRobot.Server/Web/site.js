@@ -1,12 +1,41 @@
-﻿var viewModel = {
+﻿var Key = {
+	_pressed: {},
+
+	counter: 0,
+
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40,
+
+	isDown: function (keyCode) {
+		return this._pressed[keyCode];
+	},
+
+	onKeydown: function (event) {
+		if (this._pressed[event.keyCode] != true)
+			this.counter++;
+		this._pressed[event.keyCode] = true;
+	},
+
+	onKeyup: function (event) {
+		if (this._pressed[event.keyCode] != false)
+			this.counter++;
+
+		delete this._pressed[event.keyCode];
+	}
+};
+
+var viewModel = {
 	robotState: ko.observable({ IsConnected: false, IsStreaming: false, Sensors: [] }),
 	portName: ko.observable(),
 	velocity: ko.observable(100),
+	currentMovement: ko.observable(),
 	increaseVelocity: function () {
 		if (this.velocity() == 500) {
 			return;
 		}
-	
+
 		this.velocity(this.velocity() + 50);
 	},
 	decreaseVelocity: function () {
@@ -15,11 +44,24 @@
 		}
 		this.velocity(this.velocity() - 50);
 	},
-	toggleConnected: function () {
+	connect: function () {
 		$.ajax({
 			type: 'POST',
-			url: this.robotState().IsConnected ? "/API/Disconnect" : "/API/Connect",
+			url: "/API/Connect",
 			data: "portName=" + this.portName(),
+			success: function () {
+
+			},
+			error: function (ex) {
+				console.log(ex);
+				alert("Server returned an error");
+			}
+		});
+	},
+	disconnect: function () {
+		$.ajax({
+			type: 'POST',
+			url: "/API/Disconnect",
 			success: function () {
 
 			},
@@ -47,7 +89,7 @@
 			type: 'POST',
 			url: "/API/StopStream",
 			success: function () {
-				
+
 			},
 			error: function (ex) {
 				console.log(ex);
@@ -57,6 +99,7 @@
 	},
 	forward: function () {
 		console.log("Forward");
+		viewModel.currentMovement("forward");
 		$.ajax({
 			type: 'POST',
 			url: "/API/Commands/DriveStraight",
@@ -65,6 +108,7 @@
 	},
 	forwardLeft: function () {
 		console.log("Forward-Left");
+		viewModel.currentMovement("forwardLeft");
 		$.ajax({
 			type: 'POST',
 			url: "/API/Commands/Drive",
@@ -73,6 +117,7 @@
 	},
 	forwardRight: function () {
 		console.log("Forward-Right");
+		viewModel.currentMovement("forwardRight");
 		$.ajax({
 			type: 'POST',
 			url: "/API/Commands/Drive",
@@ -81,6 +126,7 @@
 	},
 	backLeft: function () {
 		console.log("Back-Left");
+		viewModel.currentMovement("backLeft");
 		$.ajax({
 			type: 'POST',
 			url: "/API/Commands/Drive",
@@ -89,6 +135,7 @@
 	},
 	backRight: function () {
 		console.log("Back-Right");
+		viewModel.currentMovement("backRight");
 		$.ajax({
 			type: 'POST',
 			url: "/API/Commands/Drive",
@@ -97,6 +144,7 @@
 	},
 	turnInPlaceClockwise: function () {
 		console.log("Clockwise");
+		viewModel.currentMovement("clockwise");
 		$.ajax({
 			type: 'POST',
 			url: "/API/Commands/TurnInPlaceClockwise",
@@ -105,6 +153,7 @@
 	},
 	turnInPlaceCounterClockwise: function () {
 		console.log("Counter-Clockwise");
+		viewModel.currentMovement("counterClockwise");
 		$.ajax({
 			type: 'POST',
 			url: "/API/Commands/TurnInPlaceCounterClockwise",
@@ -113,6 +162,7 @@
 	},
 	stop: function () {
 		console.log("Stop");
+		viewModel.currentMovement("stop");
 		$.ajax({
 			type: 'POST',
 			url: "/API/Commands/DriveStop"
@@ -120,6 +170,7 @@
 	},
 	back: function () {
 		console.log("Back");
+		viewModel.currentMovement("back");
 		$.ajax({
 			type: 'POST',
 			url: "/API/Commands/DriveStraight",
@@ -136,9 +187,6 @@ viewModel.isStreaming = ko.dependentObservable(function () {
 }, viewModel);
 viewModel.status = ko.dependentObservable(function () {
 	return this.robotState().IsConnected ? "CONNECTED" : "DISCONNECTED";
-}, viewModel);
-viewModel.nextRunningAction = ko.dependentObservable(function () {
-	return this.robotState().IsConnected ? "Disconnect" : "Connect";
 }, viewModel);
 viewModel.ports = ko.dependentObservable(function () {
 	return this.robotState().Ports;
@@ -190,35 +238,17 @@ viewModel.bumpRight = ko.dependentObservable(function () {
 }, viewModel);
 ko.applyBindings(viewModel);
 
-var Key = {
-	_pressed: {},
-	
-	counter: 0,
+function updateVelocityBar(newValue) {
+	$("#velocityBar").progressbar({
+		value: newValue / 5
+	});
+}
 
-	LEFT: 37,
-	UP: 38,
-	RIGHT: 39,
-	DOWN: 40,
-
-	isDown: function (keyCode) {
-		return this._pressed[keyCode];
-	},
-
-	onKeydown: function (event) {
-		if (this._pressed[event.keyCode] != true)
-			this.counter++;
-		this._pressed[event.keyCode] = true;
-	
-	},
-
-	onKeyup: function (event) {
-		if (this._pressed[event.keyCode] != false)
-			this.counter++;
-	
-		delete this._pressed[event.keyCode];
-		this.counter++;
-	}
-};
+function updateBatteryPercentage(newValue) {
+	$("#batteryPercentage").progressbar({
+		value: newValue
+	});
+}
 
 $(function () {
 	startEventLoop();
@@ -231,6 +261,15 @@ $(function () {
 			viewModel.decreaseVelocity();
 		Key.onKeydown(ev);
 	});
+	updateVelocityBar(viewModel.velocity());
+	viewModel.velocity.subscribe(function (newValue) {
+		updateVelocityBar(newValue);
+	})
+	updateBatteryPercentage(viewModel.batteryPercentage());
+	viewModel.batteryPercentage.subscribe(function (newValue) {
+		updateBatteryPercentage(newValue);
+	})
+
 	$("#mainContent").show();
 })
 

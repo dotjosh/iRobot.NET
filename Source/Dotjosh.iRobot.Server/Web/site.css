@@ -2,10 +2,65 @@
 	margin-top: 60px;
 }
 
-.movementButtons p input[type=button] {
-	width: 75px;
-	height: 50px;
+.movementButtons {
+	margin-left: 25px;
+}
+
+.movementButtons p a {
+	width: 35px;
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 30px;
 	font-size: 1.3em;
 	font-weight: bold;
-	margin: 5px;
+	margin: 0px 5px;
+}
+
+.liveFeed
+{
+	background: #000;
+	border: solid 8px #CCC;
+}
+.liveFeed img
+{
+	height: 300px;
+	width: 400px;
+	display: block;
+	margin: auto;
+}
+
+.movementButtons 
+{
+	float: left;
+}
+
+.robotState
+{
+	float: left;
+	margin-left: 15px;
+	width: 300px;
+}
+
+.robotState img {
+	width: 250px;
+	margin-left: 27px;
+}
+
+#batteryPercentage {
+	height: 15px;
+}
+
+#velocityBar {
+	height: 20px;
+	margin: 15px 0;
+}
+
+.velocityDescription {
+	position: absolute;
+	font-weight: bold;
+	margin: 0 0 0 7px;
+}
+.sensorData {
+	margin-top: 20px;
 }

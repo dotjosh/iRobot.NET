@@ -20,48 +20,61 @@
 			<div class="row">
 
 				<div class="span10">
-					<p>
-						<div class="movementButtons" data-bind="visible: isConnected" style="margin: auto;width:270px">
-							<p style="text-align: center;">Velocity: <span data-bind="text: velocity"></span></p>
-							<p>
-								<input type="button" value="&larr; &uarr; " data-bind="event: { mousedown: forwardLeft, mouseup: stop }" />
-								<input type="button" value="&uarr;" data-bind="event: { mousedown: forward, mouseup: stop }" />
-								<input type="button" value="&uarr; &rarr;" data-bind="event: { mousedown: forwardRight, mouseup: stop }" />								
-							</p>	
-							<p>
-								<input type="button" value="&larr;" data-bind="event: { mousedown: turnInPlaceCounterClockwise, mouseup: stop }" />
-								<input type="button" value="stop" data-bind="click: stop" />
-								<input type="button" value="&rarr;" data-bind="event: { mousedown: turnInPlaceClockwise, mouseup: stop }" />
-							</p>	
-							<p>
-								<input type="button" value="&larr; &darr;" data-bind="event: { mousedown: backLeft, mouseup: stop }" />
-								<input type="button" value="&darr;" data-bind="event: { mousedown: back, mouseup: stop }" />
-								<input type="button" value="&darr; &rarr;" data-bind="event: { mousedown: backRight, mouseup: stop }" />
-							</p>
+						<div class="liveFeed" data-bind="visible: isConnected() == true">
+							<img src="camera.jpg"/>
 						</div>
-					</p>
+						<p data-bind="visible: isConnected() == true">
+							<div class="movementButtons" data-bind="visible: isConnected">
+								<div id="velocityBar"><div class="velocityDescription">VELOCITY: <span data-bind="text: (velocity() / 5) + '%'"></span></div></div>
+							
+								<p>
+									<a class="btn" data-bind="css: { primary: currentMovement() == 'forwardLeft' }, event: { mousedown: forwardLeft, mouseup: stop }" >&larr; &uarr;</a>
+									<a class="btn" data-bind="css: { primary: currentMovement() == 'forward' },event: { mousedown: forward, mouseup: stop }" >&uarr;</a>
+									<a class="btn" data-bind="css: { primary: currentMovement() == 'forwardRight' },event: { mousedown: forwardRight, mouseup: stop }">&uarr; &rarr;</a>								
+								</p>	
+								<p>
+									<a class="btn" data-bind="css: { primary: currentMovement() == 'counterClockwise' }, event: { mousedown: turnInPlaceCounterClockwise, mouseup: stop }">&larr;</a>
+									<a class="btn" data-bind="css: { primary: currentMovement() == 'stop' }, mousedown: stop" >stop</a>
+									<a class="btn" data-bind="css: { primary: currentMovement() == 'clockwise' }, event: { mousedown: turnInPlaceClockwise, mouseup: stop }">&rarr;</a>
+								</p>	
+								<p>
+									<a class="btn" data-bind="css: { primary: currentMovement() == 'backLeft' }, event: { mousedown: backLeft, mouseup: stop }" >&larr; &darr;</a>
+									<a class="btn" data-bind="css: { primary: currentMovement() == 'back' }, event: { mousedown: back, mouseup: stop }" >&darr;</a>
+									<a class="btn" data-bind="css: { primary: currentMovement() == 'backRight' }, event: { mousedown: backRight, mouseup: stop }" >&darr; &rarr;</a>
+								</p>
+							</div>
+							<div class="robotState" data-bind="visible: isConnected() == true">
+								<img src="irobot.png"/>
+							</div>
+						</p>
 				</div>
 
 				<div class="span6">
 					<div class="well">
 						<h3><span data-bind="text: status"></span></h3>
-						<p data-bind="visible: isConnected() == false">Port: <select data-bind="options: ports, value: portName" ></select></p>
-						<div data-bind="visible: isConnected">
-							<div>
-								Sensor Stream: 
-								<a class="btn" data-bind="click: startStream, visible: isStreaming() == false">Start</a>
-								<a class="btn" data-bind="click: stopStream, visible: isStreaming() == true">Stop</a>
-							</div>
-							<div data-bind="visible: isStreaming() == true">
-								<p>Battery Life: <p data-bind="text:batteryPercentage"></p>
-								<p>Bump Right: <p data-bind="text:bumpRight"></p>
-								<p>Bump Left: <p data-bind="text:bumpLeft"></p>
-								<p>Cliff Left: <p data-bind="text:cliffLeft"></p>
-								<p>Cliff Right: <p data-bind="text:cliffRight"></p>
-							</div>
+						<a class="btn danger small" data-bind="click: disconnect, visible: isConnected() == true">Disconnect</a>
+						<div data-bind="visible: isConnected() == false">
+							<span>Port: <select data-bind="options: ports, value: portName" class="medium"></select></span>
+							<input type="button" class="btn success" data-bind="click: connect, enable: (portName() || '').length > 0, visible: isConnected() == false" value="Connect"/>
+							
 						</div>
-						
-						<p><a class="btn primary" data-bind="click: toggleConnected, text: nextRunningAction, enable: portName() != ''"></a></p>
+						<div class="sensorData" data-bind="visible: isConnected() == true">
+							<p>
+								<div>
+									<h5>Sensor Stream:
+									<a class="btn" data-bind="click: startStream, visible: isStreaming() == false">Start</a>
+									<a class="btn" data-bind="click: stopStream, visible: isStreaming() == true">Stop</a>
+									</h5> 
+								</div>
+								<table data-bind="visible: isStreaming() == true">
+									<tr><td>Battery Life:</td> <td><div id="batteryPercentage"></div></td></tr>
+									<tr><td>Bump Right:</td> <td><span class="label" data-bind="text:bumpRight, css: { success: bumpRight() == true}"></span></td></tr>
+									<tr><td>Bump Left:</td> <td><span class="label" data-bind="text:bumpLeft, css: { success: bumpLeft() == true}"></span></td></tr>
+									<tr><td>Cliff Left:</td> <td><span class="label" data-bind="text:cliffLeft, css: { success: cliffLeft == true}"></span></td></tr>
+									<tr><td>Cliff Right:</td> <td><span class="label" data-bind="text:cliffRight, css: { success: cliffRight == true}"></span></td></tr>
+								</table>
+							</p>
+						</div>
 					</div>
 				</div>
 

@@ -15,7 +15,7 @@ namespace Dotjosh.iRobot.Server
 		{
 			Get[@"/"] = x => new GenericFileResponse("Web/index.html");
 
-			Get[@"/(?<fileName>[a-zA-Z0-9-\.]+(?<extension>[.]js|[.]css|[.]png|[.]html))"] = x =>
+			Get[@"/(?<fileName>[a-zA-Z0-9-\./]+(?<extension>[.]js|[.]css|[.]png|[.]html|[.]jpg|[.]gif))"] = x =>
 			{
 			    var fileName = ((string) x.fileName);
 			    var relativeFileName = String.Format("Web/{0}",fileName);
