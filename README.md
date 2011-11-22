@@ -1,8 +1,11 @@
 Summary
 =======
 
-This project is eventually intended to include three components.
+Controlling your iRobot Create should be fun, sleek, and accessible from all of your devices that have a web browser!
 
-1. A standalone library for easily sending and recieving iCreate commands over a serial port.
-2. A server-side library with exposed web service for executing/recieving those commands 
-3. A html/js client for interfacing between the above service and an end user. 
+Just mount a laptop with a webcam on your iRobot Create, connect it to the serial port, install this project as a windows service (installutil.exe /i dotjosh.irobot.server.exe) and connect to the web ui that's hosted in-process on port 6687 (e.g. http://yourlaptop:6687).
+
+* Full keyboard driving support (like a video game) in the browser.
+* Modern 100% HTML/JS or use the exposed JSON API to make your own.
+
+This project is very much still a work in progress, any help is always appreciated.
