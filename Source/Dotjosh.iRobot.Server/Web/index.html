@@ -42,6 +42,11 @@
 									<a class="btn" data-bind="css: { primary: currentMovement() == 'back' }, event: { mousedown: back, mouseup: stop }" >&darr;</a>
 									<a class="btn" data-bind="css: { primary: currentMovement() == 'backRight' }, event: { mousedown: backRight, mouseup: stop }" >&darr; &rarr;</a>
 								</p>
+
+								<div id="dockCommands">
+									<a class="btn" data-bind="click: dock">Dock</a>
+									<a class="btn" data-bind="click: cancelDock">Cancel Dock</a>
+								</div>
 							</div>
 							<div class="robotState" data-bind="visible: isConnected() == true">
 								<img src="irobot.png"/>

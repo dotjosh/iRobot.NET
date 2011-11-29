@@ -31,7 +31,7 @@ namespace Dotjosh.iRobot.Server
 			GenericFileResponse.SafePaths.Clear();
 			GenericFileResponse.SafePaths.Add(thisProjectRootDirectory.FullName);
 #endif
-			_nancyHost = new NancyHost(new Uri("http://localhost:" + port), new Uri("http://127.0.0.1:" + port));
+			_nancyHost = new NancyHost(new Uri("http://localhost:" + port), new Uri("http://127.0.0.1:" + port), new Uri("http://joshslaptop:6687"));
 			_nancyHost.Start();
 		}
 

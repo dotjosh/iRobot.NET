@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Commands\Baud.cs" />
     <Compile Include="Commands\CompositeCommand.cs" />
+    <Compile Include="Commands\StartDemo.cs" />
     <Compile Include="Commands\Drive.cs" />
     <Compile Include="Commands\DriveDirect.cs" />
     <Compile Include="Commands\DriveStop.cs" />

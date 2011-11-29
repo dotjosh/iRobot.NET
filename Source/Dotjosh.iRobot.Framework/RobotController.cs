@@ -49,7 +49,7 @@ namespace Dotjosh.iRobot.Framework
 		public void Execute(IRobotCommand command)
 		{
 			command.Execute(_ioCommunicator);
-			Debug.WriteLine("{0} sent to iRobot", command);
+			Console.WriteLine("{0} {1} sent to iRobot", DateTime.Now, command);
 		}
 
 		private void IO_DataRecieved(byte[] newBytes)

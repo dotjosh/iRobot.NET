@@ -1,4 +1,8 @@
-﻿var Key = {
+﻿DEMOMODE = false;
+DEFAULT_VELOCITY = 100;
+VELOCITY_INCREMENT = 50;
+
+var Key = {
 	_pressed: {},
 
 	counter: 0,
@@ -26,26 +30,58 @@
 	}
 };
 
+var ajaxQueue = (function () {
+	var requests = [];
+
+	return {
+		enqeue: function (opt) {
+			requests.push(opt);
+		},
+		run: function () {
+			var self = this,
+			    originalSuccess;
+
+			if (requests.length) {
+				originalSuccess = requests[0].complete;
+
+				requests[0].complete = function() {
+					if (typeof(originalSuccess) === 'function') originalSuccess();
+					requests.shift();
+					self.run.apply(self, []);
+				};
+
+				$.ajax(requests[0]);
+			}
+			else {
+				self.tid = setTimeout(function () {
+					self.run.apply(self, []);
+				}, 50);				
+			}
+			
+		}
+	};
+} ());
+
 var viewModel = {
-	robotState: ko.observable({ IsConnected: false, IsStreaming: false, Sensors: [] }),
+	robotState: ko.observable({ IsConnected: DEMOMODE || false, IsStreaming: false, Sensors: [] }),
 	portName: ko.observable(),
-	velocity: ko.observable(100),
+	velocity: ko.observable(DEFAULT_VELOCITY),
 	currentMovement: ko.observable(),
 	increaseVelocity: function () {
 		if (this.velocity() == 500) {
 			return;
 		}
 
-		this.velocity(this.velocity() + 50);
+		this.velocity(this.velocity() + VELOCITY_INCREMENT);
 	},
 	decreaseVelocity: function () {
 		if (this.velocity() == 0) {
 			return;
 		}
-		this.velocity(this.velocity() - 50);
+		this.velocity(this.velocity() - VELOCITY_INCREMENT);
 	},
 	connect: function () {
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Connect",
 			data: "portName=" + this.portName(),
@@ -59,7 +95,7 @@ var viewModel = {
 		});
 	},
 	disconnect: function () {
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Disconnect",
 			success: function () {
@@ -72,7 +108,7 @@ var viewModel = {
 		});
 	},
 	startStream: function () {
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/StartStream",
 			success: function () {
@@ -85,7 +121,7 @@ var viewModel = {
 		});
 	},
 	stopStream: function () {
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/StopStream",
 			success: function () {
@@ -100,7 +136,7 @@ var viewModel = {
 	forward: function () {
 		console.log("Forward");
 		viewModel.currentMovement("forward");
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Commands/DriveStraight",
 			data: "velocity=" + this.velocity()
@@ -109,74 +145,89 @@ var viewModel = {
 	forwardLeft: function () {
 		console.log("Forward-Left");
 		viewModel.currentMovement("forwardLeft");
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Commands/Drive",
 			data: "velocity=" + this.velocity() + "&radius=300"
-		})
+		});
 	},
 	forwardRight: function () {
 		console.log("Forward-Right");
 		viewModel.currentMovement("forwardRight");
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Commands/Drive",
 			data: "velocity=" + this.velocity() + "&radius=-300"
-		})
+		});
 	},
 	backLeft: function () {
 		console.log("Back-Left");
 		viewModel.currentMovement("backLeft");
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Commands/Drive",
 			data: "velocity=-" + this.velocity() + "&radius=300"
-		})
+		});
 	},
 	backRight: function () {
 		console.log("Back-Right");
 		viewModel.currentMovement("backRight");
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Commands/Drive",
 			data: "velocity=-" + this.velocity() + "&radius=-300"
-		})
+		});
 	},
 	turnInPlaceClockwise: function () {
 		console.log("Clockwise");
 		viewModel.currentMovement("clockwise");
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Commands/TurnInPlaceClockwise",
 			data: "velocity=" + this.velocity()
-		})
+		});
 	},
 	turnInPlaceCounterClockwise: function () {
 		console.log("Counter-Clockwise");
 		viewModel.currentMovement("counterClockwise");
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Commands/TurnInPlaceCounterClockwise",
 			data: "velocity=" + this.velocity()
-		})
+		});
 	},
 	stop: function () {
 		console.log("Stop");
 		viewModel.currentMovement("stop");
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Commands/DriveStop"
-		})
+		});
 	},
 	back: function () {
 		console.log("Back");
 		viewModel.currentMovement("back");
-		$.ajax({
+		ajaxQueue.enqeue({
 			type: 'POST',
 			url: "/API/Commands/DriveStraight",
 			data: "velocity=-" + this.velocity() + ""
-		})
-
+		});
+	},
+	dock: function () {
+		console.log("Dock");
+		ajaxQueue.enqeue({
+			type: 'POST',
+			url: "/API/Commands/StartDemo",
+			data: "demo=1"
+		});
+	},
+	cancelDock: function () {
+		console.log("Cancel Dock");
+		ajaxQueue.enqeue({
+			type: 'POST',
+			url: "/API/Commands/StartDemo",
+			data: "demo=-1"
+		});
 	}
 };
 viewModel.isConnected = ko.dependentObservable(function () {
@@ -253,6 +304,7 @@ function updateBatteryPercentage(newValue) {
 $(function () {
 	startEventLoop();
 	startSensorPolling();
+	ajaxQueue.run(); 
 	$(window).keyup(function (ev) { Key.onKeyup(ev); });
 	$(window).keydown(function (ev) {
 		if (ev.keyCode == 87) //W
@@ -336,7 +388,8 @@ function poll() {
 		url: "/API/State",
 		dataType: "json",
 		success: function (data) {
-			viewModel.robotState(data);
+			if (!DEMOMODE)
+				viewModel.robotState(data);
 			startSensorPolling();
 		},
 		error: function (data) {

@@ -64,3 +64,9 @@
 .sensorData {
 	margin-top: 20px;
 }
+
+#dockCommands 
+{
+	padding-top: 10px;
+	text-align: center;
+}
