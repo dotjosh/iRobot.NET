@@ -63,7 +63,7 @@ var ajaxQueue = (function () {
 } ());
 
 var viewModel = {
-	robotState: ko.observable({ IsConnected: DEMOMODE || false, IsStreaming: false, Sensors: [] }),
+	robotState: ko.observable({ IsConnected: DEMOMODE || false, IsStreaming: DEMOMODE || false, Sensors: [] }),
 	portName: ko.observable(),
 	velocity: ko.observable(DEFAULT_VELOCITY),
 	currentMovement: ko.observable(),
@@ -228,6 +228,14 @@ var viewModel = {
 			url: "/API/Commands/StartDemo",
 			data: "demo=-1"
 		});
+		this.switchToFullMode();
+	},
+	switchToFullMode: function () {
+		console.log("Switch to full mode");
+		ajaxQueue.enqeue({
+			type: 'POST',
+			url: "/API/Commands/SwitchToFullMode"
+		});
 	}
 };
 viewModel.isConnected = ko.dependentObservable(function () {
@@ -243,10 +251,10 @@ viewModel.ports = ko.dependentObservable(function () {
 	return this.robotState().Ports;
 }, viewModel);
 viewModel.batteryPercentage = ko.dependentObservable(function () {
-	var result = "Unknown";
+	var result = 0;
 	this.robotState().Sensors.forEach(function(item) {
 		if (item.Name == "BatteryCharge") {
-			result = item.Percentage + "%";
+			result = item.Percentage;
 		}
 	});
 	return result;
